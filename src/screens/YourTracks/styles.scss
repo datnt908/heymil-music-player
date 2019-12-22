@@ -1,0 +1,24 @@
+.container {
+  height: 100%;
+}
+
+.contents {
+  background-color: #f2f2f2;
+  border-radius: 0px 0px 12px 12px;
+  flex: 1;
+  z-index: 1;
+}
+
+.anchorContainer {
+  width: 100%;
+  align-items: center;
+}
+
+.anchor {
+  width: 120;
+  height: 4;
+  border-radius: 4px;
+  background-color: #404040;
+  margin: 10px 0px;
+}
+

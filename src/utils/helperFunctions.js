@@ -1,3 +1,5 @@
+import { Dimensions } from "react-native";
+
 export const hashStringToInteger = (str) => {
   let hash = 0;
   for (let i = 0; i < str.length; i++) {
@@ -13,4 +15,12 @@ export const convertSecondToMMSS = (second_number) => {
   if(minutes < 10) minutes = "0" + minutes;
   if(seconds < 10) seconds = "0" + seconds;
   return `${minutes}:${seconds}`;
+}
+
+export const UI_CONSTANTS = {
+  VIEW_HEIGHT: Dimensions.get("window").height - 24,
+  VIEW_WIDTH: Dimensions.get("window").width,
+  PLAYER_CONTROLLER_HEIGHT: 160,
+  HEADER_HEIGHT: 64,
+  SCROLL_VIEW_HEIGHT: Dimensions.get("window").height - 272,
 }
