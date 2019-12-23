@@ -1,20 +1,27 @@
-import {
-  View,
-  ScrollView,
-  Animated,
-  PanResponder,
-} from "react-native";
 import React from "react";
 import styles from "./styles.scss";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
 import Header from "../../components/Header";
+import YourTracks from "../../models/YourTracks";
+import FilesPicker from "../../utils/FilesPicker";
+import YourTrack from "../../components/YourTrack";
 import { PlusSolidSVGR } from "../../assets/icons";
 import { UI_CONSTANTS } from "../../utils/helperFunctions";
+import { View, ScrollView, Animated, PanResponder,} from "react-native";
+import * as yourTracksActions from "../../redux/actions/YourTracksActions";
 
 class YourTracksScreen extends React.Component {
   constructor(props) {
     super(props);
     this._animatedValue = new Animated.Value(0);
     this.createPanResponder();
+  }
+
+  componentDidMount = () => {
+    YourTracks.loadDataFromRealm()
+      .then(results => this.props.yourTracksLoadData())
+      .catch(e => console.log(e));
   }
 
   render() {
@@ -26,7 +33,10 @@ class YourTracksScreen extends React.Component {
           onLeftIconPress={this.onLeftIconPress} />
         <Animated.View style={[styles.contents, transformStyle]}>
           <ScrollView style={{ flex: 1 }} >
-            
+            {
+              YourTracks.tracks.map(track => { 
+                return <YourTrack key={track.id} track={track} />})
+            }
           </ScrollView>
           <View style={[styles.anchorContainer]}>
             <View style={{ backgroundColor: "#f2f2f2" }}
@@ -40,8 +50,9 @@ class YourTracksScreen extends React.Component {
   }
 
   onLeftIconPress = () => {
-    console.log("onLeftIconPress");
-
+    FilesPicker.showAudioFilesPickerDialog().then(results => {
+      this.props.yourTracksAddTracks(results);
+    }).catch(e => console.log(e));
   }
 
   createPanResponder = () => {
@@ -73,7 +84,16 @@ class YourTracksScreen extends React.Component {
   }
 }
 
-export default YourTracksScreen;
+const mapStateToProps = (state) => ({
+  yourTracks: state.yourTracks,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  yourTracksLoadData: bindActionCreators(yourTracksActions.yourTracksLoadData, dispatch),
+  yourTracksAddTracks: bindActionCreators(yourTracksActions.yourTracksAddTracks, dispatch),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(YourTracksScreen);
 
 const PlusSolidSVGRJSX =
   <PlusSolidSVGR width="100%" height="100%" fill="#404040" />
