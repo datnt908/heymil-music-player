@@ -1,0 +1,32 @@
+.container {
+  height: 48;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0px 13px 16px 24px;
+}
+
+.image {
+  height: 48;
+  width: 48;
+  border-radius: 8px;
+}
+
+.musicTitle {
+  font-family: "Exo-SemiBold";
+  font-size: 14;
+  color: #f2f2f2;
+}
+
+.musicArtist {
+  font-family: "Exo-Regular";
+  font-size: 14;
+  color: #f2f2f2;
+}
+
+.musicDuration {
+  font-family: "Exo-Regular";
+  font-size: 12;
+  color: #f2f2f2;
+}
+

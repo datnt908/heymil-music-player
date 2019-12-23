@@ -22,7 +22,7 @@ class OverflowMenu extends React.Component {
       <>
         <TouchableOpacity style={[styles.moreOptsIcon]}
           onPress={evt => this.onIconPress(evt.nativeEvent)}>
-          <CaretDownSolidSVGR width="16" height="16" fill="#404040" />
+          <CaretDownSolidSVGR width="16" height="16" fill="#8c8c8c" />
         </TouchableOpacity>
         <Modal transparent visible={this.state.visible}>
           <TouchableWithoutFeedback onPress={() => this.setState({ visible: false })}>
@@ -52,9 +52,11 @@ class OverflowMenu extends React.Component {
   }
 
   onIconPress = (nativeEvent) => {
-    const topPosition = nativeEvent.pageY - nativeEvent.locationY;
-    this.menuPosition = { flex: 1, paddingTop: topPosition, alignItems: "flex-end" };
-    this.setState({ visible: true });
+    if (this.props.opts.length != 0) {
+      const topPosition = nativeEvent.pageY - nativeEvent.locationY;
+      this.menuPosition = { flex: 1, paddingTop: topPosition, alignItems: "flex-end" };
+      this.setState({ visible: true });
+    }
   }
 }
 

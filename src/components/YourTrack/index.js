@@ -7,7 +7,7 @@ import OverflowMenu from "../OverflowMenu";
 import FilesPicker from "../../utils/FilesPicker";
 import defaultCover from "../../assets/images/logo-small.jpg";
 import { convertSecondToMMSS } from "../../utils/helperFunctions";
-import { View, Text, Image, TouchableOpacity, Modal } from "react-native";
+import { View, Text, Image, TouchableOpacity } from "react-native";
 import * as yourTracksActions from "../../redux/actions/YourTracksActions";
 
 const options = [
