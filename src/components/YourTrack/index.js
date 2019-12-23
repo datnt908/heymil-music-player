@@ -9,6 +9,7 @@ import defaultCover from "../../assets/images/logo-small.jpg";
 import { convertSecondToMMSS } from "../../utils/helperFunctions";
 import { View, Text, Image, TouchableOpacity } from "react-native";
 import * as yourTracksActions from "../../redux/actions/YourTracksActions";
+import * as playerTracksActions from "../../redux/actions/PlayerTracksActions";
 
 const options = [
   "Load artwork",
@@ -60,7 +61,7 @@ class YourTrack extends React.Component {
   }
 
   onYourTrackPress = () => {
-    console.log("onYourTrackPress");
+    this.props.playerTracksAddTrack(this.props.track.id);
   }
 
   onOptionPress = (index) => {
@@ -92,6 +93,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   yourTracksUpdateTrack: bindActionCreators(yourTracksActions.yourTracksUpdateTrack, dispatch),
   yourTracksDeleteTrack: bindActionCreators(yourTracksActions.yourTracksDeleteTrack, dispatch),
+  playerTracksAddTrack: bindActionCreators(playerTracksActions.playerTracksAddTrack, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(YourTrack);

@@ -18,12 +18,6 @@ class YourTracksScreen extends React.Component {
     this.createPanResponder();
   }
 
-  componentDidMount = () => {
-    YourTracks.loadDataFromRealm()
-      .then(results => this.props.yourTracksLoadData())
-      .catch(e => console.log(e));
-  }
-
   render() {
     const transformStyle = { transform: [{ translateY: this._animatedValue }] };
 
@@ -90,7 +84,6 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  yourTracksLoadData: bindActionCreators(yourTracksActions.yourTracksLoadData, dispatch),
   yourTracksAddTracks: bindActionCreators(yourTracksActions.yourTracksAddTracks, dispatch),
 });
 

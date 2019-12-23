@@ -1,14 +1,15 @@
 import React from "react";
-import { StyleSheet, View, AppState } from "react-native";
-import PlayerController from "./src/components/PlayerController";
-import rootReducer from "./src/redux/reducers";
 import { createStore } from "redux";
 import { Provider } from "react-redux";
+import rootReducer from "./src/redux/reducers";
 import YourTracks from "./src/models/YourTracks";
-
+import PlayerTracks from "./src/models/PlayerTracks";
 import YourTracksScreen from "./src/screens/YourTracks";
-import PlayerTracksScreen from "./src/screens/PlayerTracks";
+import { StyleSheet, View, AppState } from "react-native";
 import { Navigator, Route } from "./src/components/Navigator";
+import PlayerController from "./src/components/PlayerController";
+import { yourTracksLoadData } from "./src/redux/actions/YourTracksActions";
+import { playerTracksLoadData } from "./src/redux/actions/PlayerTracksActions";
 
 const store = createStore(rootReducer);
 
@@ -33,22 +34,32 @@ class App extends React.Component {
     );
   }
 
-  // componentDidMount() {
-  //   AppState.addEventListener('change', this._handleAppStateChange);
-  // }
+  componentDidMount() {
+    AppState.addEventListener('change', this._handleAppStateChange);
+    YourTracks.loadDataFromRealm().then(results => {
+      store.dispatch(yourTracksLoadData());
+    }).catch(e => console.log(e));
+    PlayerTracks.loadDataFromRealm().then(results => {
+      store.dispatch(playerTracksLoadData());
+    }).catch(e => console.log(e));
+  }
 
-  // componentWillUnmount() {
-  //   AppState.removeEventListener('change', this._handleAppStateChange);
-  // }
+  componentWillUnmount() {
+    AppState.removeEventListener('change', this._handleAppStateChange);
+  }
 
-  // _handleAppStateChange = (nextAppState) => {
-  //   if (this.state.appState === "active" && nextAppState === "background") {
-  //     YourTracks.saveDataIntoRealm().then(results => {
-  //       console.log("Your tracks is saved");
-  //     }).catch(e => console.log(e));
-  //   }
-  //   this.state.appState = nextAppState;
-  // };
+  _handleAppStateChange = (nextAppState) => {
+    if (this.state.appState === "active" && nextAppState === "background") {
+      YourTracks.saveDataIntoRealm().then(results => {
+        console.log("Your tracks is saved");
+      }).catch(e => console.log(e));
+      PlayerTracks.saveDataIntoRealm().then(results => {
+        console.log("Player tracks is saved");
+      }).catch(e => console.log(e));
+    }
+    this.state.appState = nextAppState;
+  }
+
 }
 
 export default App;

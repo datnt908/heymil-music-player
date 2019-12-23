@@ -1,7 +1,10 @@
 import React from "react";
 import styles from "./styles.scss";
+import { connect } from "react-redux";
 import * as Icons from "../../assets/icons";
 import Header from "../../components/Header";
+import PlayerTracks from "../../models/PlayerTracks";
+import PlayerTrack from "../../components/PlayerTrack";
 import { UI_CONSTANTS } from "../../utils/helperFunctions";
 import { View, Animated, PanResponder, ScrollView } from "react-native";
 
@@ -32,7 +35,12 @@ class PlayerTracksScreen extends React.Component {
         </Animated.View>
         <View style={{ flex: 1, zIndex: 0 }}>
           <ScrollView style={{ marginTop: 34 }}>
-            
+            {
+              PlayerTracks.trackIDs.map((trackID, index) => {
+                const track = PlayerTracks.getTrack(index);
+                return <PlayerTrack key={track.id} track={track} />;
+              })
+            }
           </ScrollView>
         </View>
       </View>
@@ -72,6 +80,13 @@ class PlayerTracksScreen extends React.Component {
   }
 }
 
-export default PlayerTracksScreen;
+const mapStateToProps = (state)=> ({
+  playerTracks: state.playerTracks,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(PlayerTracksScreen);
 
 const TimesSolidSVGRJSX = <Icons.TimesSolidSVGR width="100%" height="100%" fill="#404040" />

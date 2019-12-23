@@ -1,9 +1,12 @@
 import React from "react";
 import styles from "./styles.scss";
+import { connect } from "react-redux";
+import { bindActionCreators} from "redux";
+import OverflowMenu from "../OverflowMenu";
 import defaultCover from "../../assets/images/logo-small.jpg";
 import { convertSecondToMMSS } from "../../utils/helperFunctions";
 import { View, Text, Image, TouchableOpacity } from "react-native";
-import OverflowMenu from "../OverflowMenu";
+import * as playerTracksActions from "../../redux/actions/PlayerTracksActions";
 
 const options = [
   "Remove track",
@@ -19,7 +22,7 @@ class PlayerTrack extends React.Component {
     return (
       <>
         <View style={[styles.container]}>
-          <TouchableOpacity onPress={this.onYourTrackPress}
+          <TouchableOpacity onPress={this.onPlayerTrackPress}
             style={{ flexDirection: "row", alignItems: "center" }}>
             <Image style={[styles.image]} source={imgSource} />
             <View style={{ marginLeft: 12 }}>
@@ -36,14 +39,15 @@ class PlayerTrack extends React.Component {
     );
   }
 
-  onYourTrackPress = () => {
-    console.log("onYourTrackPress");
+  onPlayerTrackPress = () => {
+    console.log("onPlayerTrackPress");
   }
 
   onOptionPress = (index) => {
     console.log(options[index]);
     switch (index) {
       case 0:
+        this.props.playerTracksDelTrack(this.props.track.id);
         break;
       case 1:
         break;
@@ -53,4 +57,12 @@ class PlayerTrack extends React.Component {
   }
 }
 
-export default PlayerTrack;
+const mapStateToProps = (state) => ({
+  playerTracks: state.playerTracks,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  playerTracksDelTrack: bindActionCreators(playerTracksActions.playerTracksDelTrack, dispatch),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(PlayerTrack);
