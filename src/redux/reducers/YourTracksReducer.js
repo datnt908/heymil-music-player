@@ -22,9 +22,11 @@ export default (state = DEFAULT_STATE, action) => {
       return { actionType: action.type };
 
     case YOUR_TRACKS_UPDATE_TRACK:
+      YourTracks.updateTrack(action.payload);
       return { actionType: action.type };
 
     case YOUR_TRACKS_DELETE_TRACK:
+      YourTracks.deleteTrack(action.payload);
       return { actionType: action.type };
 
     default:

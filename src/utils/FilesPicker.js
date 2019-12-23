@@ -44,7 +44,7 @@ export default class FilesPicker {
             reject(result);
             break;
         }
-      }).catch(error => { reject(error); });
+      }).catch(e => reject(e));
     });
   }
 
@@ -60,13 +60,13 @@ export default class FilesPicker {
                 selectedFiles.push(selectedFile);
               });
               resolve(selectedFiles);
-            }).catch(error => { reject(error); });
+            }).catch(e => reject(e));
             break;
           default:
             reject(result);
             break;
         }
-      }).catch(error => { reject(error); });
+      }).catch(e => reject(e));
     });
   }
 
@@ -78,13 +78,13 @@ export default class FilesPicker {
             DocumentPicker.pick({ type: DocumentPicker.types.images }).then(result => {
               const selectedFile = new SelectedFile(result);
               resolve(selectedFile);
-            });
+            }).catch(e => reject(e));
             break;
           default:
             reject(result);
             break;
         }
-      }).catch(error => { reject(error); });
+      }).catch(e => reject(e));
     });
   }
 }

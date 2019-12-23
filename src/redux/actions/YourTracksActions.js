@@ -13,9 +13,9 @@ export const yourTracksAddTracks = (files) => (
 export const yourTracksCreateTrack = (track) => (
   { type: YOUR_TRACKS_CREATE_TRACK, payload: track }
 );
-export const YourTracksUpdateTrack = (track) => (
+export const yourTracksUpdateTrack = (track) => (
   { type: YOUR_TRACKS_UPDATE_TRACK, payload: track }
 );
-export const YourTracksDeleteTrack = (trackID) => (
+export const yourTracksDeleteTrack = (trackID) => (
   { type: YOUR_TRACKS_DELETE_TRACK, payload: trackID }
 );
