@@ -72,7 +72,8 @@ class YourTracksScreen extends React.Component {
             duration: 150,
             useNativeDriver: true,
           }).start(() => {
-            console.log("navigate screen here");
+            this.props.navigator.hide();
+            this._animatedValue.setValue(0);
           });
         } else {
           Animated.timing(this._animatedValue, {

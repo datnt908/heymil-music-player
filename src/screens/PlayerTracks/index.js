@@ -58,7 +58,8 @@ class PlayerTracksScreen extends React.Component {
           Animated.timing(this._animatedValue, {
             toValue: UI_CONSTANTS.HEADER_HEIGHT, duration: 150, useNativeDriver: true,
           }).start(() => {
-            console.log("navigate screen here");
+            this.props.navigator.unhide();
+            this._animatedValue.setValue(PAN_CONTAINER_TOP);
           });
         }
         else {

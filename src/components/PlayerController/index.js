@@ -2,22 +2,16 @@ import React from "react";
 import styles from "./styles.scss";
 import { View } from "react-native";
 import TrackInfo from "./TrackInfo";
-import SeekSlider from "./SeekSlider";
-import Track from "../../models/Track";
 import * as Buttons from "./Buttons";
-
-const demoTrack = new Track();
-demoTrack.duration = 200;
-demoTrack.title = "ABC";
-
+import SeekSlider from "./SeekSlider";
 
 class PlayerController extends React.Component {
   render() {
     return (
       <View style={[styles.container]}>
         <View>
-          <TrackInfo track={demoTrack} position={0} />
-          <SeekSlider track={demoTrack} position={10}
+          <TrackInfo track={undefined} position={0} />
+          <SeekSlider track={undefined} position={10}
             onSlidingComplete={this.onSlidingComplete}
             onSlidingStart={this.onSlidingStart} />
         </View>
