@@ -3,10 +3,13 @@ import styles from "./styles.scss";
 import { connect } from "react-redux";
 import * as Icons from "../../assets/icons";
 import Header from "../../components/Header";
+import YourTracks from "../../models/YourTracks";
 import PlayerTracks from "../../models/PlayerTracks";
 import PlayerTrack from "../../components/PlayerTrack";
 import { UI_CONSTANTS } from "../../utils/helperFunctions";
 import { View, Animated, PanResponder, ScrollView } from "react-native";
+import { bindActionCreators } from "redux";
+import { playerTracksStateChanged } from "../../redux/actions/PlayerTracksActions";
 
 const PAN_CONTAINER_TOP = -UI_CONSTANTS.SCROLL_VIEW_HEIGHT - 10 + UI_CONSTANTS.HEADER_HEIGHT;
 
@@ -36,9 +39,10 @@ class PlayerTracksScreen extends React.Component {
         <View style={{ flex: 1, zIndex: 0 }}>
           <ScrollView style={{ marginTop: 34 }}>
             {
-              PlayerTracks.trackIDs.map((trackID, index) => {
-                const track = PlayerTracks.getTrack(index);
-                return <PlayerTrack key={track.id} track={track} />;
+              PlayerTracks.trackIDs.map(trackID => {
+                const track = YourTracks.getTrackByID(trackID);
+                if (!track) return <></>
+                return <PlayerTrack key={trackID} track={track} />;
               })
             }
           </ScrollView>
@@ -48,7 +52,9 @@ class PlayerTracksScreen extends React.Component {
   }
 
   onLeftIconPress = () => {
-    console.log("onLeftIconPress");
+    PlayerTracks.clearAllTracks().then(() => {
+      this.props.playerTracksStateChanged();
+    }).catch(e => console.log(e));
   }
 
   createPanResponder = () => {
@@ -80,11 +86,12 @@ class PlayerTracksScreen extends React.Component {
   }
 }
 
-const mapStateToProps = (state)=> ({
+const mapStateToProps = (state) => ({
   playerTracks: state.playerTracks,
 });
 
 const mapDispatchToProps = (dispatch) => ({
+  playerTracksStateChanged: bindActionCreators(playerTracksStateChanged, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(PlayerTracksScreen);

@@ -3,13 +3,12 @@ import { Provider } from "react-redux";
 import YourTracks from "./src/models/YourTracks";
 import TrackPlayer from "react-native-track-player";
 import PlayerTracks from "./src/models/PlayerTracks";
-import { RNTPOptions } from "./src/utils/RNTPService";
 import YourTracksScreen from "./src/screens/YourTracks";
 import { StyleSheet, View, AppState } from "react-native";
 import { Navigator, Route } from "./src/components/Navigator";
 import PlayerController from "./src/components/PlayerController";
 import { yourTracksLoadData } from "./src/redux/actions/YourTracksActions";
-import { playerTracksLoadData } from "./src/redux/actions/PlayerTracksActions";
+import { playerTracksStateChanged } from "./src/redux/actions/PlayerTracksActions";
 
 class App extends React.Component {
   static store = null;
@@ -44,7 +43,7 @@ class App extends React.Component {
       App.store.dispatch(yourTracksLoadData());
     }).catch(e => console.log(e));
     PlayerTracks.loadDataFromRealm().then(() => {
-      App.store.dispatch(playerTracksLoadData());
+      App.store.dispatch(playerTracksStateChanged());
     }).catch(e => console.log(e));
   }
 
@@ -77,3 +76,20 @@ const styles = StyleSheet.create({
   },
 })
 
+const RNTPOptions = {
+  stopWithApp: true,
+  capabilities: [
+    TrackPlayer.CAPABILITY_STOP,
+    TrackPlayer.CAPABILITY_PLAY,
+    TrackPlayer.CAPABILITY_PAUSE,
+    TrackPlayer.CAPABILITY_SEEK_TO,
+    TrackPlayer.CAPABILITY_SKIP_TO_NEXT,
+    TrackPlayer.CAPABILITY_SKIP_TO_PREVIOUS,
+  ],
+  notificationCapabilities: [
+    TrackPlayer.CAPABILITY_PLAY,
+    TrackPlayer.CAPABILITY_PAUSE,
+    TrackPlayer.CAPABILITY_SKIP_TO_NEXT,
+    TrackPlayer.CAPABILITY_SKIP_TO_PREVIOUS,
+  ],
+};

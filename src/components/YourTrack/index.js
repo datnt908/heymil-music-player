@@ -5,11 +5,12 @@ import InputModal from "../InputModal";
 import { bindActionCreators } from "redux";
 import OverflowMenu from "../OverflowMenu";
 import FilesPicker from "../../utils/FilesPicker";
+import PlayerTracks from "../../models/PlayerTracks";
 import defaultCover from "../../assets/images/logo-small.jpg";
 import { convertSecondToMMSS } from "../../utils/helperFunctions";
 import { View, Text, Image, TouchableOpacity } from "react-native";
-import * as yourTracksActions from "../../redux/actions/YourTracksActions";
-import * as playerTracksActions from "../../redux/actions/PlayerTracksActions";
+import { yourTracksUpdateTrack, yourTracksDeleteTrack, } from "../../redux/actions/YourTracksActions";
+import { playerTracksStateChanged, } from "../../redux/actions/PlayerTracksActions";
 
 const options = [
   "Load artwork",
@@ -61,7 +62,9 @@ class YourTrack extends React.Component {
   }
 
   onYourTrackPress = () => {
-    this.props.playerTracksAddTrack(this.props.track.id);
+    PlayerTracks.addTrack(this.props.track.id).then(() => {
+      this.props.playerTracksStateChanged();
+    }).catch(e => console.log(e));
   }
 
   onOptionPress = (index) => {
@@ -79,6 +82,9 @@ class YourTrack extends React.Component {
         break;
       case 2:
         this.props.yourTracksDeleteTrack(this.props.track.id);
+        PlayerTracks.delTrack(this.props.track.id).then(() => {
+          this.props.playerTracksStateChanged();
+        }).catch(e => console.log(e));
         break;
       default:
         break;
@@ -91,9 +97,9 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  yourTracksUpdateTrack: bindActionCreators(yourTracksActions.yourTracksUpdateTrack, dispatch),
-  yourTracksDeleteTrack: bindActionCreators(yourTracksActions.yourTracksDeleteTrack, dispatch),
-  playerTracksAddTrack: bindActionCreators(playerTracksActions.playerTracksAddTrack, dispatch),
+  yourTracksUpdateTrack: bindActionCreators(yourTracksUpdateTrack, dispatch),
+  yourTracksDeleteTrack: bindActionCreators(yourTracksDeleteTrack, dispatch),
+  playerTracksStateChanged: bindActionCreators(playerTracksStateChanged, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(YourTrack);

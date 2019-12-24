@@ -21,6 +21,8 @@ export const PlayerSchema = {
     id: "int",
     trackIDs: "string[]",
     currentIndex: "int",
+    isShuffle: "bool",
+    isRepeat: "bool",
   }
 }
 

@@ -11,7 +11,7 @@ class YourTracks {
     return new Promise((resolve, reject) => {
       TrackDAL.loadAllTracks().then(tracks => {
         that.tracks = tracks;
-        resolve(tracks);
+        resolve();
       }).catch(e => reject(e));
     });
   }
@@ -19,9 +19,9 @@ class YourTracks {
   saveDataIntoRealm = () => {
     const that = this;
     return new Promise((resolve, reject) => {
-      TrackDAL.saveAllTracks(that.tracks).then(results => {
-        resolve(results);
-      }).catch(e => reject(e));
+      TrackDAL.saveAllTracks(that.tracks)
+        .then(() => resolve())
+        .catch(e => reject(e));
     });
   }
 
@@ -34,30 +34,35 @@ class YourTracks {
   }
 
   createTrack = (newTrack) => {
-    let isDuplicated = false;
-    for(let i = 0; i < this.tracks.length; i++)
-      if(this.tracks[i].id === newTrack.id) {
-        isDuplicated = true;
-        break;
-      }
-    if(!isDuplicated) this.tracks.push(newTrack);
+    for (let i = 0; i < this.tracks.length; i++)
+      if (this.tracks[i].id === newTrack.id) 
+        return;
+    this.tracks.push(newTrack);
   }
 
   updateTrack = (newTrack) => {
-    for(let i = 0; i < this.tracks.length; i++)
-      if(this.tracks[i].id === newTrack.id) {
+    for (let i = 0; i < this.tracks.length; i++)
+      if (this.tracks[i].id === newTrack.id) {
         this.tracks[i] = newTrack;
         break;
       }
   }
 
   deleteTrack = (trackID) => {
-    for(let i = 0; i < this.tracks.length; i++)
-      if(this.tracks[i].id === trackID) {
+    for (let i = 0; i < this.tracks.length; i++)
+      if (this.tracks[i].id === trackID) {
         this.tracks.splice(i, 1);
         break;
       }
   }
+
+  getTrackByID = (trackID) => {
+    for (let i = 0; i < this.tracks.length; i++)
+      if (this.tracks[i].id === trackID)
+        return this.tracks[i];
+    return null;
+  }
+
 }
 
 export default new YourTracks();
