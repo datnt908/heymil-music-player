@@ -6,7 +6,7 @@ export const hashStringToInteger = (str) => {
     hash += Math.pow(str.charCodeAt(i) * 31, str.length - i);
     hash = hash & hash; // Convert to 32bit integer
   }
-  return hash;
+  return hash.toString();
 }
 
 export const convertSecondToMMSS = (second_number) => {
@@ -24,4 +24,8 @@ export const UI_CONSTANTS = {
   HEADER_HEIGHT: 64,
   SCROLL_VIEW_HEIGHT: Dimensions.get("window").height - 272,
   PLAYER_CONTROLLER_TOP: Dimensions.get("window").height - 184,
+}
+
+export const getRandomInt = (max) => {
+  return Math.floor(Math.random() * Math.floor(max));
 }

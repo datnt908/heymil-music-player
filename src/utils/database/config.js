@@ -5,7 +5,7 @@ export const TrackSchema = {
   name: TRACK_SCHEMA_NAME,
   primaryKey: "id",
   properties: {
-    id: "int",
+    id: "string",
     url: "string",
     title: "string",
     artist: "string",
@@ -19,7 +19,7 @@ export const PlayerSchema = {
   primaryKey: "id",
   properties: {
     id: "int",
-    trackIDs: "int[]",
+    trackIDs: "string[]",
     currentIndex: "int",
   }
 }

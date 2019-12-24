@@ -5,10 +5,8 @@ export const savePlayer = (player) => {
   return new Promise((resolve, reject) => {
     Realm.open(dbOptions).then(realm => {
       try {
-        realm.write(() => {
-          realm.create(PLAYER_SCHEMA_NAME, player, true);
-        });
-        resolve(player);
+        realm.write(() => { realm.create(PLAYER_SCHEMA_NAME, player, true); });
+        resolve();
       } catch (e) { reject(e); }
     }).catch(e => reject(e));
   });
@@ -17,7 +15,13 @@ export const savePlayer = (player) => {
 export const loadPlayer = () => {
   return new Promise((resolve, reject) => {
     Realm.open(dbOptions).then(realm => {
-      resolve(realm.objectForPrimaryKey(PLAYER_SCHEMA_NAME, 0));
+      const playerModal = { id: 0, trackIDs: [], currentIndex: 0 };
+      const playerSchema = realm.objectForPrimaryKey(PLAYER_SCHEMA_NAME, 0);
+      if (playerSchema != undefined) {
+        playerModal.trackIDs = playerSchema.trackIDs;
+        playerModal.currentIndex = playerSchema.currentIndex;
+      }
+      resolve(playerModal);
     }).catch(e => reject(e));
   });
 }

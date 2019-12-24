@@ -12,7 +12,7 @@ export const saveAllTracks = (tracks) => {
             realm.create(TRACK_SCHEMA_NAME, track);
           });
         });
-        resolve(tracks);
+        resolve();
       } catch (e) { reject(e); }
     }).catch(e => reject(e));
   });
