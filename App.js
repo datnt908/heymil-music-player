@@ -3,6 +3,7 @@ import { createStore } from "redux";
 import { Provider } from "react-redux";
 import rootReducer from "./src/redux/reducers";
 import YourTracks from "./src/models/YourTracks";
+import TrackPlayer from "react-native-track-player";
 import PlayerTracks from "./src/models/PlayerTracks";
 import YourTracksScreen from "./src/screens/YourTracks";
 import { StyleSheet, View, AppState } from "react-native";
@@ -19,6 +20,10 @@ class App extends React.Component {
     this.state = {
       appState: AppState.currentState,
     }
+    TrackPlayer.setupPlayer().then(() => {
+      console.log("RN Track Player setup succesful");
+    }).catch(e => console.log(e));
+    TrackPlayer.updateOptions(RNTPOptions);
   }
 
   render() {
@@ -63,6 +68,31 @@ class App extends React.Component {
 }
 
 export default App;
+
+const RNTPOptions = {
+  stopWithApp: true,
+  capabilities: [
+    TrackPlayer.CAPABILITY_STOP,
+    TrackPlayer.CAPABILITY_PLAY,
+    TrackPlayer.CAPABILITY_PAUSE,
+    TrackPlayer.CAPABILITY_SEEK_TO,
+    TrackPlayer.CAPABILITY_SKIP_TO_NEXT,
+    TrackPlayer.CAPABILITY_SKIP_TO_PREVIOUS,
+  ],
+  notificationCapabilities: [
+    TrackPlayer.CAPABILITY_STOP,
+    TrackPlayer.CAPABILITY_PLAY,
+    TrackPlayer.CAPABILITY_PAUSE,
+    TrackPlayer.CAPABILITY_SKIP_TO_NEXT,
+    TrackPlayer.CAPABILITY_SKIP_TO_PREVIOUS,
+  ],
+  compactCapabilities: [
+    TrackPlayer.CAPABILITY_PLAY,
+    TrackPlayer.CAPABILITY_PAUSE,
+    TrackPlayer.CAPABILITY_SKIP_TO_NEXT,
+    TrackPlayer.CAPABILITY_SKIP_TO_PREVIOUS,
+  ]
+};
 
 const styles = StyleSheet.create({
   mainContainer: {
