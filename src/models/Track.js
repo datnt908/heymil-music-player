@@ -18,7 +18,7 @@ export default class Track {
       .replace(/_/g, " ")
       .replace(".mp3", "");
     this.artist = "Unknow artist";
-    this.artwork = "";
+    this.artwork = "https://i.ibb.co/F5QwTxZ/logo-small.jpg";
     this.duration = 0;
   }
 

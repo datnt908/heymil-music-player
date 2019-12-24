@@ -38,7 +38,7 @@ class PlayerTracks {
           that.trackIDs.push(trackID);
           TrackPlayer.skip(trackID).then(() => {
             that.currentIndex = that.trackIDs.length - 1;
-            resolve();
+            resolve(track);
           }).catch(e => reject(e));
         }).catch(e => reject(e));
       } else reject("ERROR: Can't add null track")
@@ -56,19 +56,24 @@ class PlayerTracks {
               resolve();
             }).catch(e => reject(e));
           } else {
-            TrackPlayer.reset().then(() => {
-              that.trackIDs.splice(i, 1);
-              if (that.trackIDs.length !== 0) {
-                const tracks = [];
-                that.trackIDs.forEach(trackID => {
-                  tracks.push(YourTracks.getTrackByID(trackID));
-                });
-                TrackPlayer.add(tracks).then(() => {
-                  if (that.currentIndex - 1 >= 0) that.currentIndex--;
-                  TrackPlayer.skip(that.trackIDs[that.currentIndex])
-                    .then(() => resolve()).catch(e => reject(e));
-                }).catch(e => reject(e));
-              } else resolve();
+            TrackPlayer.stop().then(() => {
+              TrackPlayer.reset().then(() => {
+                that.trackIDs.splice(i, 1);
+                if (that.trackIDs.length !== 0) {
+                  const tracks = [];
+                  that.trackIDs.forEach(trackID => {
+                    const track = YourTracks.getTrackByID(trackID);
+                    if (track) tracks.push(track);
+                  });
+                  if (tracks.length !== 0) {
+                    TrackPlayer.add(tracks).then(() => {
+                      if (that.currentIndex - 1 >= 0) that.currentIndex--;
+                      TrackPlayer.skip(that.trackIDs[that.currentIndex])
+                        .then(() => resolve()).catch(e => reject(e));
+                    }).catch(e => reject(e));
+                  } else resolve();
+                } else resolve();
+              }).catch(e => reject(e));
             }).catch(e => reject(e));
           }
           return;
@@ -116,6 +121,37 @@ class PlayerTracks {
     });
   }
 
+  skipToNext = () => {
+    const that = this;
+    return new Promise((resolve, reject) => {
+      if (that.isShuffle) {
+        const newID = that.trackIDs[getRandomInt(that.trackIDs.length)];
+        TrackPlayer.skip(newID).then(() => {
+          that.currentIndex = that.trackIDs.indexOf(newID)
+          resolve();
+        }).catch(e => reject(e));
+      } else {
+        TrackPlayer.skipToNext().then(() => {
+          TrackPlayer.getCurrentTrack().then(trackID => {
+            that.currentIndex = that.trackIDs.indexOf(trackID);
+            resolve();
+          }).catch(e => reject(e));
+        }).catch(e => reject(e));
+      }
+    });
+  }
+
+  skipToPrev = () => {
+    const that = this;
+    return new Promise((resolve, reject) => {
+      TrackPlayer.skipToPrevious().then(() => {
+        TrackPlayer.getCurrentTrack().then(trackID => {
+          that.currentIndex = that.trackIDs.indexOf(trackID);
+          resolve();
+        }).catch(e => reject(e));
+      }).catch(e => reject(e));
+    });
+  }
 }
 
 export default new PlayerTracks();

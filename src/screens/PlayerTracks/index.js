@@ -25,7 +25,6 @@ class PlayerTracksScreen extends React.Component {
     const panContainerStyle =
       [styles.panContainer, { height: UI_CONSTANTS.SCROLL_VIEW_HEIGHT + 24 }];
     panContainerStyle.push(transformStyle);
-
     return (
       <View style={[styles.container]}>
         <Header title="Player Tracks" leftIconElement={TimesSolidSVGRJSX}
@@ -39,10 +38,11 @@ class PlayerTracksScreen extends React.Component {
         <View style={{ flex: 1, zIndex: 0 }}>
           <ScrollView style={{ marginTop: 34 }}>
             {
-              PlayerTracks.trackIDs.map(trackID => {
+              PlayerTracks.trackIDs.filter(trackID => {
+                return YourTracks.getTrackByID(trackID) != null
+              }).map(trackID => {
                 const track = YourTracks.getTrackByID(trackID);
-                if (!track) return <></>
-                return <PlayerTrack key={trackID} track={track} />;
+                return <PlayerTrack key={trackID} track={track} />
               })
             }
           </ScrollView>
@@ -88,6 +88,7 @@ class PlayerTracksScreen extends React.Component {
 
 const mapStateToProps = (state) => ({
   playerTracks: state.playerTracks,
+  yourTracks: state.yourTracks,
 });
 
 const mapDispatchToProps = (dispatch) => ({
