@@ -1,9 +1,48 @@
-import TrackPlayer from "react-native-track-player";
+import { Alert } from 'react-native';
+import TrackPlayer from 'react-native-track-player';
 
-module.exports = async function() {
-  TrackPlayer.addEventListener("remote-play", () => TrackPlayer.play());
-  TrackPlayer.addEventListener("remote-pause", () => TrackPlayer.pause());
-  TrackPlayer.addEventListener("remote-stop", () => TrackPlayer.stop());
-  TrackPlayer.addEventListener("remote-next", () => TrackPlayer.skipToNext());
-  TrackPlayer.addEventListener("remote-previous", () => TrackPlayer.skipToPrevious());
+async function eventHandler(store, action) {
+  switch (action.type) {
+    case "remote-play":
+      break;
+    case 'remote-pause':
+      break;
+    case 'remote-stop':
+      break;
+    case 'remote-next':
+      break;
+    case 'remote-previous':
+      break;
+    default:
+      break;
+  }
+};
+
+module.exports = function (store) {
+  return eventHandler.bind(null, store);
+};
+
+export const RNTPOptions = {
+  stopWithApp: true,
+  capabilities: [
+    TrackPlayer.CAPABILITY_STOP,
+    TrackPlayer.CAPABILITY_PLAY,
+    TrackPlayer.CAPABILITY_PAUSE,
+    TrackPlayer.CAPABILITY_SEEK_TO,
+    TrackPlayer.CAPABILITY_SKIP_TO_NEXT,
+    TrackPlayer.CAPABILITY_SKIP_TO_PREVIOUS,
+  ],
+  notificationCapabilities: [
+    TrackPlayer.CAPABILITY_STOP,
+    TrackPlayer.CAPABILITY_PLAY,
+    TrackPlayer.CAPABILITY_PAUSE,
+    TrackPlayer.CAPABILITY_SKIP_TO_NEXT,
+    TrackPlayer.CAPABILITY_SKIP_TO_PREVIOUS,
+  ],
+  compactCapabilities: [
+    TrackPlayer.CAPABILITY_PLAY,
+    TrackPlayer.CAPABILITY_PAUSE,
+    TrackPlayer.CAPABILITY_SKIP_TO_NEXT,
+    TrackPlayer.CAPABILITY_SKIP_TO_PREVIOUS,
+  ]
 };

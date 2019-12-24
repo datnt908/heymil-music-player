@@ -1,10 +1,9 @@
 import React from "react";
-import { createStore } from "redux";
 import { Provider } from "react-redux";
-import rootReducer from "./src/redux/reducers";
 import YourTracks from "./src/models/YourTracks";
 import TrackPlayer from "react-native-track-player";
 import PlayerTracks from "./src/models/PlayerTracks";
+import { RNTPOptions } from "./src/utils/RNTPService";
 import YourTracksScreen from "./src/screens/YourTracks";
 import { StyleSheet, View, AppState } from "react-native";
 import { Navigator, Route } from "./src/components/Navigator";
@@ -12,9 +11,9 @@ import PlayerController from "./src/components/PlayerController";
 import { yourTracksLoadData } from "./src/redux/actions/YourTracksActions";
 import { playerTracksLoadData } from "./src/redux/actions/PlayerTracksActions";
 
-const store = createStore(rootReducer);
-
 class App extends React.Component {
+  static store = null;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -28,7 +27,7 @@ class App extends React.Component {
 
   render() {
     return (
-      <Provider store={store}>
+      <Provider store={App.store}>
         <View style={[styles.mainContainer]}>
           <Navigator>
             <Route name="YourTracksScreen" component={YourTracksScreen} />
@@ -41,11 +40,11 @@ class App extends React.Component {
 
   componentDidMount() {
     AppState.addEventListener('change', this._handleAppStateChange);
-    YourTracks.loadDataFromRealm().then(results => {
-      store.dispatch(yourTracksLoadData());
+    YourTracks.loadDataFromRealm().then(() => {
+      App.store.dispatch(yourTracksLoadData());
     }).catch(e => console.log(e));
-    PlayerTracks.loadDataFromRealm().then(results => {
-      store.dispatch(playerTracksLoadData());
+    PlayerTracks.loadDataFromRealm().then(() => {
+      App.store.dispatch(playerTracksLoadData());
     }).catch(e => console.log(e));
   }
 
@@ -55,53 +54,26 @@ class App extends React.Component {
 
   _handleAppStateChange = (nextAppState) => {
     if (this.state.appState === "active" && nextAppState === "background") {
-      YourTracks.saveDataIntoRealm().then(results => {
-        console.log("Your tracks is saved");
-      }).catch(e => console.log(e));
-      PlayerTracks.saveDataIntoRealm().then(results => {
-        console.log("Player tracks is saved");
-      }).catch(e => console.log(e));
+      YourTracks.saveDataIntoRealm().then(() => { })
+        .catch(e => console.log(e));
+      PlayerTracks.saveDataIntoRealm().then(() => { })
+        .catch(e => console.log(e));
     }
     this.state.appState = nextAppState;
   }
 
 }
 
-export default App;
-
-const RNTPOptions = {
-  stopWithApp: true,
-  capabilities: [
-    TrackPlayer.CAPABILITY_STOP,
-    TrackPlayer.CAPABILITY_PLAY,
-    TrackPlayer.CAPABILITY_PAUSE,
-    TrackPlayer.CAPABILITY_SEEK_TO,
-    TrackPlayer.CAPABILITY_SKIP_TO_NEXT,
-    TrackPlayer.CAPABILITY_SKIP_TO_PREVIOUS,
-  ],
-  notificationCapabilities: [
-    TrackPlayer.CAPABILITY_STOP,
-    TrackPlayer.CAPABILITY_PLAY,
-    TrackPlayer.CAPABILITY_PAUSE,
-    TrackPlayer.CAPABILITY_SKIP_TO_NEXT,
-    TrackPlayer.CAPABILITY_SKIP_TO_PREVIOUS,
-  ],
-  compactCapabilities: [
-    TrackPlayer.CAPABILITY_PLAY,
-    TrackPlayer.CAPABILITY_PAUSE,
-    TrackPlayer.CAPABILITY_SKIP_TO_NEXT,
-    TrackPlayer.CAPABILITY_SKIP_TO_PREVIOUS,
-  ]
-};
+module.exports = (store) => {
+  App.store = store;
+  return App;
+}
 
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
     backgroundColor: "#0d0d0d",
     justifyContent: "space-between",
-  },
-  pageContainer: {
-    ...StyleSheet.absoluteFillObject,
   },
 })
 
