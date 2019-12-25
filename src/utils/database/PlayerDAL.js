@@ -15,11 +15,18 @@ export const savePlayer = (player) => {
 export const loadPlayer = () => {
   return new Promise((resolve, reject) => {
     Realm.open(dbOptions).then(realm => {
-      const playerModal = { id: 0, trackIDs: [], currentIndex: 0 };
+      const playerModal = {
+        trackIDs: [],
+        currentIndex: 0,
+        isShuffle: false,
+        isRepeat: false,
+      };
       const playerSchema = realm.objectForPrimaryKey(PLAYER_SCHEMA_NAME, 0);
       if (playerSchema != undefined) {
         playerModal.trackIDs = playerSchema.trackIDs;
         playerModal.currentIndex = playerSchema.currentIndex;
+        playerModal.isShuffle = playerSchema.isShuffle;
+        playerModal.isRepeat = playerSchema.isRepeat;
       }
       resolve(playerModal);
     }).catch(e => reject(e));

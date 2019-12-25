@@ -77,7 +77,6 @@ const styles = StyleSheet.create({
 })
 
 const RNTPOptions = {
-  stopWithApp: true,
   capabilities: [
     TrackPlayer.CAPABILITY_STOP,
     TrackPlayer.CAPABILITY_PLAY,
@@ -86,10 +85,10 @@ const RNTPOptions = {
     TrackPlayer.CAPABILITY_SKIP_TO_NEXT,
     TrackPlayer.CAPABILITY_SKIP_TO_PREVIOUS,
   ],
-  notificationCapabilities: [
+  compactCapabilities: [
     TrackPlayer.CAPABILITY_PLAY,
     TrackPlayer.CAPABILITY_PAUSE,
     TrackPlayer.CAPABILITY_SKIP_TO_NEXT,
     TrackPlayer.CAPABILITY_SKIP_TO_PREVIOUS,
-  ],
+  ]
 };

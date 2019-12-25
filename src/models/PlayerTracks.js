@@ -13,9 +13,14 @@ class PlayerTracks {
   }
 
   clearAllTracks = () => {
-    console.log("PlayerTracks.clearAllTracks");
+    const that = this;
     return new Promise((resolve, reject) => {
-      resolve();
+      that.trackIDs = [];
+      that.currentIndex = 0;
+      TrackPlayer.stop().then(() => {
+        TrackPlayer.reset()
+          .then(() => resolve()).catch(e => reject(e));
+      }).catch(e => reject(e));
     });
   }
 
@@ -65,7 +70,7 @@ class PlayerTracks {
                     const track = YourTracks.getTrackByID(trackID);
                     if (track) tracks.push(track);
                   });
-                  if (tracks.length !== 0) {
+                  if (tracks.length > 0) {
                     TrackPlayer.add(tracks).then(() => {
                       if (that.currentIndex - 1 >= 0) that.currentIndex--;
                       TrackPlayer.skip(that.trackIDs[that.currentIndex])
@@ -89,6 +94,8 @@ class PlayerTracks {
       PlayerDAL.loadPlayer().then(result => {
         const tracks = [];
         that.trackIDs = [];
+        that.isShuffle = result.isShuffle;
+        that.isRepeat = result.isRepeat;
         result.trackIDs.forEach(trackID => {
           const track = YourTracks.getTrackByID(trackID);
           if (track) {
@@ -96,13 +103,15 @@ class PlayerTracks {
             tracks.push(track);
           }
         });
-        TrackPlayer.add(tracks).then(() => {
-          that.currentIndex = result.currentIndex;
-          if (that.currentIndex >= that.trackIDs.length)
-            that.currentIndex = 0;
-          TrackPlayer.skip(that.trackIDs[that.currentIndex])
-            .then(() => resolve()).catch(e => reject(e));
-        }).catch(e => reject(e));
+        if (tracks.length > 0) {
+          TrackPlayer.add(tracks).then(() => {
+            that.currentIndex = result.currentIndex;
+            if (that.currentIndex >= that.trackIDs.length)
+              that.currentIndex = 0;
+            TrackPlayer.skip(that.trackIDs[that.currentIndex])
+              .then(() => resolve()).catch(e => reject(e));
+          }).catch(e => reject(e));
+        } else resolve();
       }).catch(e => reject(e));
     });
   }
@@ -151,6 +160,21 @@ class PlayerTracks {
         }).catch(e => reject(e));
       }).catch(e => reject(e));
     });
+  }
+
+  onTrackEnd = (trackID, position) => {
+    const track = YourTracks.getTrackByID(trackID);
+    if (track) {
+      if (track.duration == Math.floor(position)) {
+        if (this.isRepeat) {
+          TrackPlayer.skipToPrevious();
+        } else {
+          TrackPlayer.skipToPrevious().then(() =>{
+            this.skipToNext();
+          });
+        }
+      }
+    }
   }
 }
 

@@ -44,10 +44,24 @@ class PlayerTrack extends React.Component {
 
   onPlayerTrackPress = () => {
     const trackID = this.props.track.id;
-    TrackPlayer.skip(trackID).then(() => {
-      PlayerTracks.currentIndex = PlayerTracks.trackIDs.indexOf(trackID);
-      this.props.playerTracksStateChanged();
-    }).catch(e => console.log(e));
+    if (PlayerTracks.trackIDs[PlayerTracks.currentIndex] == this.props.track.id) {
+      if (PlayerTracks.isPlaying) {
+        TrackPlayer.pause().then(() => {
+          PlayerTracks.isPlaying = false;
+          this.props.playerTracksStateChanged();
+        }).catch(e => console.log(e));
+      } else {
+        TrackPlayer.play().then(() => {
+          PlayerTracks.isPlaying = true;
+          this.props.playerTracksStateChanged();
+        }).catch(e => console.log(e));
+      }
+    } else {
+      TrackPlayer.skip(trackID).then(() => {
+        PlayerTracks.currentIndex = PlayerTracks.trackIDs.indexOf(trackID);
+        this.props.playerTracksStateChanged();
+      }).catch(e => console.log(e));
+    }
   }
 
   onOptionPress = (index) => {
@@ -68,6 +82,7 @@ class PlayerTrack extends React.Component {
 
 const mapStateToProps = (state) => ({
   playerTracks: state.playerTracks,
+  yourTracks: state.yourTracks,
 });
 
 const mapDispatchToProps = (dispatch) => ({
