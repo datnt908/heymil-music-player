@@ -1,0 +1,21 @@
+.container {
+  height: 64;
+  background-color: #f2f2f2;
+  padding: 0px 13.5px;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 2;
+}
+
+.title {
+  font-family: "Exo-Bold";
+  color: #404040;
+  font-size: 20;
+}
+
+.iconContainer {
+  width: 32;
+  height: 32;
+  padding: 10.5px;
+}

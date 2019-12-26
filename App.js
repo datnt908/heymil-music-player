@@ -1,21 +1,19 @@
 import React, { Component } from 'react'
 import { View, StyleSheet } from 'react-native'
 import Controller from './src/components/Controller'
+import { Route, Navigator} from './src/components/Navigator'
+import YourTracksScreen from './src/screens/YourTracks'
 
 class App extends Component {
   render() {
     return (
       <View style={[styles.container]}>
-        <View style={{flex: 1}}>
-
-        </View>
+        <Navigator>
+          <Route name="YourTracksScreen" component={YourTracksScreen} />
+        </Navigator>
         <Controller />
       </View>
     )
-  }
-
-  onPress = () => {
-   
   }
 }
 
