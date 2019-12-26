@@ -4,6 +4,7 @@ import Header from '../../components/Header'
 import { TimesSolidSVGR } from '../../assets/icons'
 import { UI_CONSTANTS } from '../../utils/helperFunctions'
 import styles from './styles.scss'
+import PlayerTracksList from '../../components/TracksLists/PlayerTracks'
 
 const TimesSolidSVGRJSX = <TimesSolidSVGR width="100%" height="100%" fill="#404040" />
 const PAN_CONTAINER_TOP = -UI_CONSTANTS.SCROLL_VIEW_HEIGHT - 10 + UI_CONSTANTS.HEADER_HEIGHT;
@@ -17,7 +18,7 @@ class PlayerTracksScreen extends Component {
   }
 
   render() {
-    console.log("PlayerTracksScreen.render");
+    console.log('PlayerTracksScreen.render');
     const panContainerStyle = [styles.panContainer, { height: PAN_CONTAINER_HEGHT }];
     const transformStyle = { transform: [{ translateY: this._animatedValue }] };
     panContainerStyle.push(transformStyle);
@@ -33,6 +34,7 @@ class PlayerTracksScreen extends Component {
         </Animated.View>
         <View style={{ flex: 1, zIndex: 0 }}>
           <ScrollView style={{ marginTop: 34 }}>
+            <PlayerTracksList />
           </ScrollView>
         </View>
       </View>
@@ -40,7 +42,7 @@ class PlayerTracksScreen extends Component {
   }
 
   onLeftIconPress = () => {
-    console.log("PlayerTracksScreen.onLeftIconPress");
+    console.log('PlayerTracksScreen.onLeftIconPress');
   }
 
   createPanResponder = () => {

@@ -1,4 +1,4 @@
-import { Dimensions } from "react-native"
+import { Dimensions } from 'react-native'
 
 export const convertSecondToMMSS = (second_number) => {
   let minutes = Math.floor(second_number / 60);
@@ -15,4 +15,5 @@ export const UI_CONSTANTS = {
   HEADER_HEIGHT: 64,
   SCROLL_VIEW_HEIGHT: Dimensions.get("window").height - 272,
   PLAYER_CONTROLLER_TOP: Dimensions.get("window").height - 184,
+  ARTWORK_URI: 'defaultImage',
 }
