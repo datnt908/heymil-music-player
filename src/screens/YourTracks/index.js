@@ -1,13 +1,16 @@
-import React, { Component } from 'react'
-import { View, PanResponder, Animated, ScrollView } from 'react-native'
 import styles from './styles.scss'
-import { PlusSolidSVGR } from '../../assets/icons'
-import { UI_CONSTANTS } from '../../utils/helperFunctions'
+import { connect } from 'react-redux'
+import React, { Component } from 'react'
+import { bindActionCreators } from 'redux'
 import Header from '../../components/Header'
+import { PlusSolidSVGR } from '../../assets/icons'
+import { getTrackFromFile } from '../../models/Track'
+import { readMp3Duration } from '../../utils/Mp3Reader'
+import { UI_CONSTANTS } from '../../utils/helperFunctions'
 import YourTracksList from '../../components/TracksLists/YourTracks'
 import { showAudioFilesPickerDialog } from '../../utils/FilesPicker'
-import { readMp3Duration } from '../../utils/Mp3Reader'
-import { getTrackFromFile } from '../../models/Track'
+import { View, PanResponder, Animated, ScrollView } from 'react-native'
+import { yourTracksAddTrack } from '../../redux/actions/yourTracksActions'
 
 const PlusSolidSVGRJSX = <PlusSolidSVGR width="100%" height="100%" fill="#404040" />
 
@@ -46,7 +49,7 @@ class YourTracksScreen extends Component {
       for (let i = 0; i < selectedFiles.length; ++i) {
         const track = getTrackFromFile(selectedFiles[i]);
         track.duration = await readMp3Duration(selectedFiles[i].path);
-        console.log(track);
+        this.props.yourTracksAddTrack(track);
       }
     } catch (e) { console.log(e); }
   }
@@ -85,5 +88,9 @@ class YourTracksScreen extends Component {
   }
 }
 
-export default YourTracksScreen
+const mapDispatchToProps = (dispatch) => ({
+  yourTracksAddTrack: bindActionCreators(yourTracksAddTrack, dispatch),
+})
+
+export default connect(null, mapDispatchToProps)(YourTracksScreen)
 

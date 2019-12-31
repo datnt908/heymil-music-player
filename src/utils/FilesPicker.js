@@ -40,36 +40,11 @@ export const showAudioFilesPickerDialog = async () => {
   throw new Error('READ_EXTERNAL_STORAGE permission is not GRANTED');
 }
 
-export default class FilesPicker {
-  static requestReadExternalStoragePermission = async () => {
-    let checkPermission = await check(PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE);
-    if (checkPermission === RESULTS.DENIED) {
-      console.log('Requesting READ_EXTERNAL_STORAGE permission');
-      checkPermission = await request(PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE);
-      return checkPermission;
-    }
-    return checkPermission;
+export const showImageFilePickerDialog = async () => {
+  const requestResult = await requestReadExternalStoragePermission();
+  if (requestResult === RESULTS.GRANTED) {
+    const pickedFile = await DocumentPicker.pick({ type: PICKER_FILE_IMAGE });
+    return new SelectedFile(pickedFile);
   }
-
-  static showAudioFilesPickerDialog = async () => {
-    const requestResult = await this.requestReadExternalStoragePermission();
-    if (requestResult === RESULTS.GRANTED) {
-      const pickedFiles = await DocumentPicker.pickMultiple({ type: PICKER_FILE_AUDIO });
-      const selectedFiles = [];
-      pickedFiles.forEach(pickedFile => {
-        selectedFiles.push(new SelectedFile(pickedFile));
-      });
-      return selectedFiles;
-    }
-    throw new Error('READ_EXTERNAL_STORAGE permission is not GRANTED');
-  }
-
-  static showImageFilePickerDialog = async () => {
-    const requestResult = await this.requestReadExternalStoragePermission();
-    if (requestResult === RESULTS.GRANTED) {
-      const pickedFile = await DocumentPicker.pick({ type: PICKER_FILE_IMAGE });
-      return new SelectedFile(pickedFile);
-    }
-    throw new Error('READ_EXTERNAL_STORAGE permission is not GRANTED');
-  }
+  throw new Error('READ_EXTERNAL_STORAGE permission is not GRANTED');
 }

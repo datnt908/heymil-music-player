@@ -1,11 +1,14 @@
 import React from 'react'
-import { Text, View, TouchableOpacity, Image } from 'react-native'
 import Track from './Track'
 import styles from './styles.scss'
-import { convertSecondToMMSS } from '../../utils/helperFunctions';
 import MoreOpts from '../MoreOpts'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
 import TextInputModal from '../Modals/TextInput'
-import FilesPicker from '../../utils/FilesPicker';
+import { convertSecondToMMSS } from '../../utils/helperFunctions'
+import { Text, View, TouchableOpacity, Image } from 'react-native'
+import { showImageFilePickerDialog } from '../../utils/FilesPicker'
+import { yourTracksUpdateTrack, yourTracksDeleteTrack } from '../../redux/actions/yourTracksActions';
 
 const options = [
   'Load artwork',
@@ -52,13 +55,18 @@ class YourTrack extends Track {
     console.log('YourTrack.onTrackPress');
   }
 
-  onOptionPress = (index) => {
+  onOptionPress = async (index) => {
     console.log('YourTrack.onOptionPress', index);
     switch (index) {
       case 0:
-        FilesPicker.showImageFilePickerDialog().then(selectedFile => {
-          console.log(selectedFile);
-        }).catch(e => console.log(e));
+        try {
+          const selectedFile = await showImageFilePickerDialog();
+          this._track.artwork = selectedFile.path;
+          this._artwork = { uri: this._track.artwork };
+          this.props.yourTracksUpdateTrack(this._track);
+          this.setState({});
+        }
+        catch (e) { console.log(e); }
         break;
 
       case 1:
@@ -66,17 +74,26 @@ class YourTrack extends Track {
         break;
 
       case 2:
+        this.props.yourTracksDeleteTrack(this._track);
         break;
-        
+
       default:
         break;
     }
   }
 
   onTextInputModalDone = (text) => {
-    console.log('YourTrack.onTextInputModalDone', text);
+    if (text !== "") {
+      this._track.artist = text;
+      this.props.yourTracksUpdateTrack(this._track);
+    }
     this.setState({ modalVisible: false });
   }
 }
 
-export default YourTrack
+const mapDispatchToProps = (dispatch) => ({
+  yourTracksUpdateTrack: bindActionCreators(yourTracksUpdateTrack, dispatch),
+  yourTracksDeleteTrack: bindActionCreators(yourTracksDeleteTrack, dispatch),
+});
+
+export default connect(null, mapDispatchToProps)(YourTrack)
