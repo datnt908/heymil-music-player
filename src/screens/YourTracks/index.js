@@ -5,8 +5,9 @@ import { PlusSolidSVGR } from '../../assets/icons'
 import { UI_CONSTANTS } from '../../utils/helperFunctions'
 import Header from '../../components/Header'
 import YourTracksList from '../../components/TracksLists/YourTracks'
-import FilesPicker from '../../utils/FilesPicker'
-
+import { showAudioFilesPickerDialog } from '../../utils/FilesPicker'
+import { readMp3Duration } from '../../utils/Mp3Reader'
+import { getTrackFromFile } from '../../models/Track'
 
 const PlusSolidSVGRJSX = <PlusSolidSVGR width="100%" height="100%" fill="#404040" />
 
@@ -39,12 +40,15 @@ class YourTracksScreen extends Component {
     )
   }
 
-  onLeftIconPress = () => {
-    FilesPicker.showAudioFilesPickerDialog().then(selectedFiles => {
-      selectedFiles.forEach(selectedFile => {
-        console.log(selectedFile);
-      });
-    }).catch(e => console.log(e));
+  onLeftIconPress = async () => {
+    try {
+      const selectedFiles = await showAudioFilesPickerDialog();
+      for (let i = 0; i < selectedFiles.length; ++i) {
+        const track = getTrackFromFile(selectedFiles[i]);
+        track.duration = await readMp3Duration(selectedFiles[i].path);
+        console.log(track);
+      }
+    } catch (e) { console.log(e); }
   }
 
   createPanResponder = () => {

@@ -1,5 +1,7 @@
 import { Dimensions } from 'react-native'
 
+const ID_LENGTH = 8;
+
 export const convertSecondToMMSS = (second_number) => {
   let minutes = Math.floor(second_number / 60);
   let seconds = second_number % 60;
@@ -16,4 +18,17 @@ export const UI_CONSTANTS = {
   SCROLL_VIEW_HEIGHT: Dimensions.get("window").height - 272,
   PLAYER_CONTROLLER_TOP: Dimensions.get("window").height - 184,
   ARTWORK_URI: 'defaultImage',
+}
+
+export const generateID = () => {
+  let timestamp = (+new Date).toString();
+  let parts = timestamp.split("").reverse();
+  let id = "";
+  for (let i = 0; i < ID_LENGTH; ++i)
+    id += parts[getRandomInt(0, parts.length)];
+  return id.toString();
+}
+
+export const getRandomInt = (min, max) => {
+  return Math.floor(Math.random() * (max - min)) + min;
 }
