@@ -75,14 +75,28 @@ export const loadFromSchema = async (yourTracks) => {
   const playerSchema = await loadPlayerSchema();
   const currentTrackID = playerSchema.trackIDs[playerSchema.currentIndex];
   const tracks = [];
-  for(let i = 0; i < playerSchema.trackIDs.length; i++) 
-    for(let j = 0; j < yourTracks.length; j++)
-      if(playerSchema.trackIDs[i] === yourTracks[j].id) {
+  for (let i = 0; i < playerSchema.trackIDs.length; i++)
+    for (let j = 0; j < yourTracks.length; j++)
+      if (playerSchema.trackIDs[i] === yourTracks[j].id) {
         tracks.push(yourTracks[j]); break;
       }
-  
+
   if (tracks.length > 0) {
     await RNTP.add(tracks);
     await RNTP.skip(currentTrackID);
   }
+}
+
+export const onTrackEnd = async (track, position, isRepeat, isShuffle) => {
+  if (track && track.duration === Math.floor(position))
+    try {
+      if (isRepeat) {
+        await RNTP.seekTo(0);
+        await RNTP.skipToPrevious();
+      } else {
+        await RNTP.seekTo(0);
+        await RNTP.skipToPrevious();
+        await skipToNext(isShuffle);
+      }
+    } catch (e) { console.log(e); }
 }

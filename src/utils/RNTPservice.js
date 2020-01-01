@@ -3,10 +3,9 @@ import {
   playerSkipTrack,
 } from '../redux/actions/playerActions';
 import RNTP from 'react-native-track-player'
-import { getPlayerQueue, skipToNext } from '../models/Player';
+import { getPlayerQueue, skipToNext, onTrackEnd } from '../models/Player';
 
 async function eventHandler(store, action) {
-  console.log(action);
   const { isShuffle, isRepeat } = store.getState().player;
 
   switch (action.type) {
@@ -34,7 +33,11 @@ async function eventHandler(store, action) {
       break;
 
     case 'remote-seek':
-
+      try {
+        await RNTP.seekTo(time);
+        RNTP.play();
+        store.dispatch(playerPlayPause(true));
+      } catch (e) { console.log(e); }
       break;
 
     case 'remote-next':
@@ -54,11 +57,30 @@ async function eventHandler(store, action) {
       break;
 
     case 'playback-track-changed':
-
+      try {
+        const track = await RNTP.getTrack(action.track);
+        await onTrackEnd(track, action.position, isRepeat, isShuffle);
+        const playerQueue = await getPlayerQueue();
+        store.dispatch(playerSkipTrack(playerQueue.currentIndex));
+      } catch (e) { console.log(e); }
       break;
 
     case 'playback-queue-ended':
-
+      if (isRepeat) {
+        RNTP.seekTo(0); break;
+      }
+      if (isShuffle) {
+        try {
+          await skipToNext(true);
+          const playerQueue = await getPlayerQueue();
+          store.dispatch(playerSkipTrack(playerQueue.currentIndex));
+        } catch (e) { console.log(e); }
+        break;
+      }
+      try {
+        await RNTP.stop();
+        store.dispatch(playerPlayPause(false));
+      } catch (e) { console.log(e); }
       break;
 
     default:

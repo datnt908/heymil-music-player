@@ -22,7 +22,6 @@ class YourTracksScreen extends Component {
   }
 
   render() {
-    console.log('YourTracksScreen.render');
     const transformStyle = { transform: [{ translateY: this._animatedValue }] };
     return (
       <View style={[styles.container]}>

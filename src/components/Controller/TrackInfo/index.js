@@ -1,29 +1,25 @@
-import React, { Component } from 'react'
-import { Text, View } from 'react-native'
-import { convertSecondToMMSS } from '../../../utils/helperFunctions'
+import React from 'react'
 import styles from './styles.scss'
+import { connect } from 'react-redux'
+import { Text, View } from 'react-native'
+import RNTP from 'react-native-track-player'
+import { convertSecondToMMSS } from '../../../utils/helperFunctions'
 
 const DEFAULT_TRACK = {
   title: 'No Track To Play',
   duration: 0,
 }
 
-class TrackInfo extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      track: props.track ? props.track : DEFAULT_TRACK,
-      position: 0,
-    }
-  }
-
+class TrackInfo extends RNTP.ProgressComponent {
   render() {
-    const positionMMSS = convertSecondToMMSS(this.state.position);
-    const durationMMSS = convertSecondToMMSS(this.state.track.duration);
+    let currentTrack = this.props.player.tracks[this.props.player.currentIndex];
+    if(!currentTrack) currentTrack = DEFAULT_TRACK;
+    const positionMMSS = convertSecondToMMSS(Math.floor(this.state.position));
+    const durationMMSS = convertSecondToMMSS(currentTrack.duration);
 
     return (
       <View style={[styles.container]}>
-        <Text style={[styles.trackTitle]}>{this.state.track.title}</Text>
+        <Text style={[styles.trackTitle]}>{currentTrack.title}</Text>
         <Text style={[styles.trackProgress]}>
           {`${positionMMSS} / ${durationMMSS}`}
         </Text>
@@ -32,4 +28,8 @@ class TrackInfo extends Component {
   }
 }
 
-export default TrackInfo
+const mapStateToProps = (state) => ({
+  player: state.player,
+})
+
+export default connect(mapStateToProps, null)(TrackInfo)
