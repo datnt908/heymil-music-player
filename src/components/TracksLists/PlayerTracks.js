@@ -1,21 +1,16 @@
+import { connect } from 'react-redux'
 import React, { Component } from 'react'
 import { ScrollView } from 'react-native'
 import PlayerTrack from '../Track/PlayerTrack';
 
-const DEFAULT_LIST = ['123', '234', '345', '456'];
-
 class PlayerTracksList extends Component {
-  constructor(props) {
-    super(props);
-    this._tracks = this.props.tracks ? this.props.tracks : DEFAULT_LIST;
-  }
-
   render() {
     return (
       <ScrollView style={{ felx: 1 }}>
         {
-          this._tracks.map(value => {
-            return <PlayerTrack key={value} isRunning={value == "234"} />
+          this.props.player.tracks.map((value, index) => {
+            return <PlayerTrack key={value.id} track={value}
+              isRunning={index === this.props.player.currentIndex} />
           })
         }
       </ScrollView>
@@ -23,4 +18,8 @@ class PlayerTracksList extends Component {
   }
 }
 
-export default PlayerTracksList
+const mapStateToProps = (state) => ({
+  player: state.player,
+})
+
+export default connect(mapStateToProps, null)(PlayerTracksList)

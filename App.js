@@ -1,5 +1,7 @@
 import { Provider } from 'react-redux'
 import React, { Component } from 'react'
+import RNTP from 'react-native-track-player'
+import { RNTPOptions } from './src/models/Player'
 import Controller from './src/components/Controller'
 import YourTracksScreen from './src/screens/YourTracks'
 import { View, StyleSheet, AppState } from 'react-native'
@@ -7,13 +9,16 @@ import { Route, Navigator } from './src/components/Navigator'
 import { yourTracksLoadTracks } from './src/redux/actions/yourTracksActions'
 import { loadAllTracks, saveAllTracks } from './src/utils/database/TrackDAL'
 
-
 class App extends Component {
   static store = null;
 
   constructor(props) {
     super(props);
     this.state = { appState: AppState.currentState }
+    RNTP.setupPlayer().then(() => {
+      RNTP.updateOptions(RNTPOptions);
+      console.log("RNTP setup successful");
+    }).catch(e => console.log(e));
   }
 
   componentDidMount = async () => {
@@ -22,7 +27,6 @@ class App extends Component {
       const tracks = await loadAllTracks();
       App.store.dispatch(yourTracksLoadTracks(tracks));
     } catch (e) { console.log(e); }
-
   }
 
   componentWillUnmount = () => {

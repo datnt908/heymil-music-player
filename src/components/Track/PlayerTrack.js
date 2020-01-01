@@ -1,13 +1,18 @@
-import React, { Component } from 'react'
-import { Text, View, TouchableOpacity, Image } from 'react-native'
+import React from 'react'
+import Track from './Track'
 import styles from './styles.scss'
-import { convertSecondToMMSS } from '../../utils/helperFunctions';
-import Track from './Track';
-import MoreOpts from '../MoreOpts';
+import MoreOpts from '../MoreOpts'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import RNTP from 'react-native-track-player'
+import { delTrack, getPlayerQueue } from '../../models/Player'
+import { convertSecondToMMSS } from '../../utils/helperFunctions'
+import { Text, View, TouchableOpacity, Image } from 'react-native'
+import { playerUpdateQueue } from '../../redux/actions/playerActions'
 
 const options = [
   'Remove track',
-  'Add to playlist'
+  'Add to playlist',
 ];
 
 class PlayerTrack extends Track {
@@ -37,24 +42,40 @@ class PlayerTrack extends Track {
     )
   }
 
-  onTrackPress = () => {
-    console.log('PlayerTrack.onTrackPress');
+  onTrackPress = async () => {
+    if (this.props.isRunning) {
+      console.log('PlayerTrack.onTrackPress.isRunning');
+    } else {
+      try {
+        await RNTP.skip(this._track.id);
+        const playerQueue = await getPlayerQueue();
+        this.props.playerUpdateQueue(playerQueue);
+      } catch (e) { console.log(e); }
+    }
   }
 
-  onOptionPress = (index) => {
-    console.log('PlayerTrack.onOptionPress', index);
+  onOptionPress = async (index) => {
     switch (index) {
       case 0:
+        try {
+          await delTrack(this._track);
+          const playerQueue = await getPlayerQueue();
+          this.props.playerUpdateQueue(playerQueue);
+        } catch (e) { console.log(e); }
         break;
 
       case 1:
+        console.log('PlayerTrack.onOptionPress', options[index]);
         break;
 
       default:
         break;
     }
   }
-
 }
 
-export default PlayerTrack
+const mapDispatchToProps = (dispatch) => ({
+  playerUpdateQueue: bindActionCreators(playerUpdateQueue, dispatch),
+})
+
+export default connect(null, mapDispatchToProps)(PlayerTrack)

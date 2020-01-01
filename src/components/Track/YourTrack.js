@@ -8,6 +8,8 @@ import TextInputModal from '../Modals/TextInput'
 import { convertSecondToMMSS } from '../../utils/helperFunctions'
 import { Text, View, TouchableOpacity, Image } from 'react-native'
 import { showImageFilePickerDialog } from '../../utils/FilesPicker'
+import { playerUpdateQueue } from '../../redux/actions/playerActions'
+import { addTrack, getPlayerQueue, delTrack } from '../../models/Player'
 import { yourTracksUpdateTrack, yourTracksDeleteTrack } from '../../redux/actions/yourTracksActions';
 
 const options = [
@@ -51,8 +53,12 @@ class YourTrack extends Track {
     )
   }
 
-  onTrackPress = () => {
-    console.log('YourTrack.onTrackPress');
+  onTrackPress = async () => {
+    try {
+      await addTrack(this._track);
+      const playerQueue = await getPlayerQueue();
+      this.props.playerUpdateQueue(playerQueue);
+    } catch (e) { console.log(e); }
   }
 
   onOptionPress = async (index) => {
@@ -65,8 +71,7 @@ class YourTrack extends Track {
           this._artwork = { uri: this._track.artwork };
           this.props.yourTracksUpdateTrack(this._track);
           this.setState({});
-        }
-        catch (e) { console.log(e); }
+        } catch (e) { console.log(e); }
         break;
 
       case 1:
@@ -75,6 +80,11 @@ class YourTrack extends Track {
 
       case 2:
         this.props.yourTracksDeleteTrack(this._track);
+        try {
+          await delTrack(this._track);
+          const playerQueue = await getPlayerQueue();
+          this.props.playerUpdateQueue(playerQueue);
+        } catch (e) { console.log(e); }
         break;
 
       default:
@@ -94,6 +104,7 @@ class YourTrack extends Track {
 const mapDispatchToProps = (dispatch) => ({
   yourTracksUpdateTrack: bindActionCreators(yourTracksUpdateTrack, dispatch),
   yourTracksDeleteTrack: bindActionCreators(yourTracksDeleteTrack, dispatch),
+  playerUpdateQueue: bindActionCreators(playerUpdateQueue, dispatch),
 });
 
 export default connect(null, mapDispatchToProps)(YourTrack)
