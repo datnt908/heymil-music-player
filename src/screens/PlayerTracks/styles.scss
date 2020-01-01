@@ -1,0 +1,22 @@
+.container {
+  height: 100%;
+  background-color: #0d0d0d;
+}
+
+.panContainer {
+  width: 100%;
+  background-color: #f2f2f2;
+  border-radius: 0px 0px 12px 12px;
+  align-items: center;
+  justify-content: flex-end;
+  z-index: 1;
+  position: absolute;
+}
+
+.anchor {
+  width: 120;
+  height: 4;
+  border-radius: 4px;
+  background-color: #404040;
+  margin: 10px 0px;
+}

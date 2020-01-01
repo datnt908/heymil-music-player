@@ -1,0 +1,44 @@
+.modal {
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0,0,0,0.2);
+}
+
+.modalContainer {
+  background-color: #ffffff;
+  border-radius: 8px;
+  padding: 18px;
+}
+
+.buttonsContainer {
+  align-self: flex-end;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.textButton {
+  font-family: "Exo-SemiBold";
+  font-size: 14px;
+  color: #404040;
+  padding: 0px 10px;
+}
+
+.textInput {
+  width: 200px;
+  padding: 0px 10px;
+  margin: 6px 0px 24px;
+  line-height: 20px;
+  border: 1px solid #8c8c8c;
+  border-radius: 4px;
+  font-family: "Exo-Regular";
+  font-size: 14px;
+  color: #404040;
+}
+
+.textTitle {
+  font-family: "Exo-SemiBold";
+  font-size: 16px;
+  color: #404040;
+}
