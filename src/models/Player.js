@@ -1,4 +1,5 @@
 import RNTP from 'react-native-track-player'
+import { getRandomInt } from '../utils/helperFunctions';
 
 export const RNTPOptions = {
   stopWithApp: true,
@@ -57,4 +58,14 @@ export const delTrack = async (track) => {
       }
       return;
     }
+}
+
+export const skipToNext = async (isShuffle) => {
+  const tracks = await RNTP.getQueue();
+  if (isShuffle) {
+    const newIndex = getRandomInt(0, tracks.length);
+    await RNTP.skip(tracks[newIndex].id);
+  } else {
+    await RNTP.skipToNext();
+  }
 }

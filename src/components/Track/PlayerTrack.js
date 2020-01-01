@@ -8,7 +8,7 @@ import RNTP from 'react-native-track-player'
 import { delTrack, getPlayerQueue } from '../../models/Player'
 import { convertSecondToMMSS } from '../../utils/helperFunctions'
 import { Text, View, TouchableOpacity, Image } from 'react-native'
-import { playerUpdateQueue } from '../../redux/actions/playerActions'
+import { playerUpdateQueue, playerPlayPause } from '../../redux/actions/playerActions'
 
 const options = [
   'Remove track',
@@ -43,15 +43,21 @@ class PlayerTrack extends Track {
   }
 
   onTrackPress = async () => {
-    if (this.props.isRunning) {
-      console.log('PlayerTrack.onTrackPress.isRunning');
-    } else {
-      try {
+    try {
+      if (this.props.isRunning) {
+        if (this.props.player.isPlaying) {
+          await RNTP.pause();
+          this.props.playerPlayPause(false);
+        } else {
+          await RNTP.play();
+          this.props.playerPlayPause(true);
+        }
+      } else {
         await RNTP.skip(this._track.id);
         const playerQueue = await getPlayerQueue();
         this.props.playerUpdateQueue(playerQueue);
-      } catch (e) { console.log(e); }
-    }
+      }
+    } catch (e) { console.log(e); }
   }
 
   onOptionPress = async (index) => {
@@ -74,8 +80,13 @@ class PlayerTrack extends Track {
   }
 }
 
-const mapDispatchToProps = (dispatch) => ({
-  playerUpdateQueue: bindActionCreators(playerUpdateQueue, dispatch),
+const mapStateToProps = (state) => ({
+  player: state.player,
 })
 
-export default connect(null, mapDispatchToProps)(PlayerTrack)
+const mapDispatchToProps = (dispatch) => ({
+  playerUpdateQueue: bindActionCreators(playerUpdateQueue, dispatch),
+  playerPlayPause: bindActionCreators(playerPlayPause, dispatch),
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(PlayerTrack)

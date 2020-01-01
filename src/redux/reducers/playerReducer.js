@@ -1,4 +1,10 @@
-import { PLAYER_UPDATE_QUEUE } from '../actions/playerActions'
+import {
+  PLAYER_UPDATE_QUEUE,
+  PLAYER_PLAY_PAUSE,
+  PLAYER_SKIP_TRACK,
+  PLAYER_SET_SHUFFLE,
+  PLAYER_SET_REPEAT,
+} from '../actions/playerActions'
 
 const INITIAL_STATE = {
   tracks: [],
@@ -16,6 +22,17 @@ export default (state = INITIAL_STATE, action) => {
         tracks: action.payload.tracks,
         currentIndex: action.payload.currentIndex,
       };
+    case PLAYER_PLAY_PAUSE:
+      return { ...state, isPlaying: action.payload };
+
+    case PLAYER_SKIP_TRACK:
+      return { ...state, currentIndex: action.payload };
+
+    case PLAYER_SET_SHUFFLE:
+      return { ...state, isShuffle: action.payload };
+
+    case PLAYER_SET_REPEAT:
+      return { ...state, isRepeat: action.payload };
 
     default:
       return state;

@@ -1,11 +1,13 @@
-import React, { Component } from 'react'
-import { View } from 'react-native'
 import styles from './styles.scss'
+import { View } from 'react-native'
 import TrackInfo from './TrackInfo'
 import SeekSlider from './SeekSlider'
+import React, { Component } from 'react'
 import PlayButton from './Buttons/PlayButton'
-import { RepeatButton, ShuffleButton } from './Buttons/ToggleButtons'
-import { BackwardButton, ForwardButton } from './Buttons/SkipButtons'
+import RepeatButton from './Buttons/ToggleButtons/Repeat'
+import ShuffleButton from './Buttons/ToggleButtons/Shuffle'
+import ForwardButton from './Buttons/SkipButtons/Forward'
+import BackwardButton from './Buttons/SkipButtons/Backward'
 
 class Controller extends Component {
   render() {
