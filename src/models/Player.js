@@ -1,5 +1,6 @@
 import RNTP from 'react-native-track-player'
 import { getRandomInt } from '../utils/helperFunctions';
+import { loadPlayerSchema } from '../utils/database/PlayerDAL';
 
 export const RNTPOptions = {
   stopWithApp: true,
@@ -67,5 +68,21 @@ export const skipToNext = async (isShuffle) => {
     await RNTP.skip(tracks[newIndex].id);
   } else {
     await RNTP.skipToNext();
+  }
+}
+
+export const loadFromSchema = async (yourTracks) => {
+  const playerSchema = await loadPlayerSchema();
+  const currentTrackID = playerSchema.trackIDs[playerSchema.currentIndex];
+  const tracks = [];
+  for(let i = 0; i < playerSchema.trackIDs.length; i++) 
+    for(let j = 0; j < yourTracks.length; j++)
+      if(playerSchema.trackIDs[i] === yourTracks[j].id) {
+        tracks.push(yourTracks[j]); break;
+      }
+  
+  if (tracks.length > 0) {
+    await RNTP.add(tracks);
+    await RNTP.skip(currentTrackID);
   }
 }

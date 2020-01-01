@@ -1,4 +1,5 @@
 export const TRACK_SCHEMA_NAME = "Track";
+export const PLAYER_SCHEMA_NAME = "Player";
 
 export const TrackSchema = {
   name: TRACK_SCHEMA_NAME,
@@ -13,6 +14,18 @@ export const TrackSchema = {
   }
 }
 
+export const PlayerSchema = {
+  name: PLAYER_SCHEMA_NAME,
+  primaryKey: "id",
+  properties: {
+    id: "int",
+    trackIDs: "string[]",
+    currentIndex: "int",
+    isShuffle: "bool",
+    isRepeat: "bool",
+  }
+}
+
 export const dbOptions = {
-  schema: [TrackSchema],
+  schema: [PlayerSchema, TrackSchema],
 }
