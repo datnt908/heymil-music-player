@@ -1,14 +1,9 @@
-import React, { Component } from 'react'
-import { Text, View, TouchableOpacity, Image } from 'react-native'
+import React from 'react'
+import Track from './Track'
 import styles from './styles.scss'
-import { convertSecondToMMSS } from '../../utils/helperFunctions';
-import Track from './Track';
-import MoreOpts from '../MoreOpts';
-
-const options = [
-  'Remove track',
-  'Add to playlist'
-];
+import { EllipsisHSolidSVGR } from '../../assets/icons'
+import { convertSecondToMMSS } from '../../utils/helperFunctions'
+import { Text, View, TouchableOpacity, Image } from 'react-native'
 
 class PlayerTrack extends Track {
   render() {
@@ -31,7 +26,10 @@ class PlayerTrack extends Track {
         <View style={{ flexDirection: "row", alignItems: "center" }}>
           <Text style={[styles.musicDuration, styles.lightColor]}>
             {durationMMSS}</Text>
-          <MoreOpts opts={options} onOptionPress={this.onOptionPress} />
+          <TouchableOpacity style={[styles.iconContainer]}
+            onPress={() => this.props.onClickMoreOpts(this._track)}>
+            <EllipsisHSolidSVGR width="12" height="12" fill="#f2f2f2" />
+          </TouchableOpacity>
         </View>
       </View>
     )
@@ -39,20 +37,6 @@ class PlayerTrack extends Track {
 
   onTrackPress = () => {
     console.log('PlayerTrack.onTrackPress');
-  }
-
-  onOptionPress = (index) => {
-    console.log('PlayerTrack.onOptionPress', index);
-    switch (index) {
-      case 0:
-        break;
-
-      case 1:
-        break;
-
-      default:
-        break;
-    }
   }
 
 }

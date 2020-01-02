@@ -7,7 +7,7 @@ import styles from './styles.scss'
 import PlayerTracksList from '../../components/TracksLists/PlayerTracks'
 
 const TimesSolidSVGRJSX = <TimesSolidSVGR width="100%" height="100%" fill="#404040" />
-const PAN_CONTAINER_TOP = -UI_CONSTANTS.SCROLL_VIEW_HEIGHT - 10 + UI_CONSTANTS.HEADER_HEIGHT;
+const PAN_CONTAINER_TOP = -UI_CONSTANTS.SCROLL_VIEW_HEIGHT + UI_CONSTANTS.HEADER_HEIGHT;
 const PAN_CONTAINER_HEGHT = UI_CONSTANTS.SCROLL_VIEW_HEIGHT + 24;
 
 class PlayerTracksScreen extends Component {
@@ -33,7 +33,7 @@ class PlayerTracksScreen extends Component {
           </View>
         </Animated.View>
         <View style={{ flex: 1, zIndex: 0 }}>
-          <ScrollView style={{ marginTop: 34 }}>
+          <ScrollView style={{ marginTop: 44 }}>
             <PlayerTracksList />
           </ScrollView>
         </View>
