@@ -72,7 +72,7 @@ class YourTracksScreen extends Component {
   onPanResponderRelease = (evt, gestureState) => {
     if (Math.floor(gestureState.moveY) < UI_CONSTANTS.VIEW_HEIGHT / 2) {
       Animated.timing(this._animatedValue, {
-        toValue: -UI_CONSTANTS.SCROLL_VIEW_HEIGHT - 10,
+        toValue: -UI_CONSTANTS.SCROLL_VIEW_HEIGHT,
         duration: 150,
         useNativeDriver: true,
       }).start(() => {

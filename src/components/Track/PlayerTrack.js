@@ -1,19 +1,14 @@
 import React from 'react'
 import Track from './Track'
 import styles from './styles.scss'
-import MoreOpts from '../MoreOpts'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import RNTP from 'react-native-track-player'
-import { delTrack, getPlayerQueue } from '../../models/Player'
+import { getPlayerQueue } from '../../models/Player'
+import { EllipsisHSolidSVGR } from '../../assets/icons'
 import { convertSecondToMMSS } from '../../utils/helperFunctions'
 import { Text, View, TouchableOpacity, Image } from 'react-native'
-import { playerUpdateQueue, playerPlayPause } from '../../redux/actions/playerActions'
-
-const options = [
-  'Remove track',
-  'Add to playlist',
-];
+import { playerPlayPause } from '../../redux/actions/playerActions'
 
 class PlayerTrack extends Track {
   render() {
@@ -36,7 +31,10 @@ class PlayerTrack extends Track {
         <View style={{ flexDirection: "row", alignItems: "center" }}>
           <Text style={[styles.musicDuration, styles.lightColor]}>
             {durationMMSS}</Text>
-          <MoreOpts opts={options} onOptionPress={this.onOptionPress} />
+          <TouchableOpacity style={[styles.iconContainer]}
+            onPress={() => this.props.onClickMoreOpts(this._track)}>
+            <EllipsisHSolidSVGR width="12" height="12" fill="#f2f2f2" />
+          </TouchableOpacity>
         </View>
       </View>
     )
@@ -59,25 +57,6 @@ class PlayerTrack extends Track {
       }
     } catch (e) { console.log(e); }
   }
-
-  onOptionPress = async (index) => {
-    switch (index) {
-      case 0:
-        try {
-          await delTrack(this._track);
-          const playerQueue = await getPlayerQueue();
-          this.props.playerUpdateQueue(playerQueue);
-        } catch (e) { console.log(e); }
-        break;
-
-      case 1:
-        console.log('PlayerTrack.onOptionPress', options[index]);
-        break;
-
-      default:
-        break;
-    }
-  }
 }
 
 const mapStateToProps = (state) => ({
@@ -85,7 +64,6 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  playerUpdateQueue: bindActionCreators(playerUpdateQueue, dispatch),
   playerPlayPause: bindActionCreators(playerPlayPause, dispatch),
 })
 
