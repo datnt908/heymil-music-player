@@ -18,6 +18,7 @@ export const UI_CONSTANTS = {
   SCROLL_VIEW_HEIGHT: Dimensions.get("window").height - 272,
   PLAYER_CONTROLLER_TOP: Dimensions.get("window").height - 184,
   ARTWORK_URI: 'https://i.ibb.co/F5QwTxZ/logo-small.jpg',
+  MOREOPTS_HEIGHT: 60,
 }
 
 export const generateID = () => {

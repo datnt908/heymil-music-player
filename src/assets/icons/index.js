@@ -1,6 +1,7 @@
 import BackwardSolidSVGR from "./BackwardSolid";
 import BarSolidSVGR from "./BarSolid";
 import CaretDownSolidSVGR from "./CaretDownSolid";
+import EllipsisHSolidSVGR from "./EllipsisHSolid";
 import ForwardSolidSVGR from "./ForwardSolid";
 import PauseSolidSVGR from "./PauseSolid";
 import PlaySolidSVGR from "./PlaySolid";
@@ -13,6 +14,7 @@ export {
   BackwardSolidSVGR,
   BarSolidSVGR,
   CaretDownSolidSVGR,
+  EllipsisHSolidSVGR,
   ForwardSolidSVGR,
   PauseSolidSVGR,
   PlaySolidSVGR,
