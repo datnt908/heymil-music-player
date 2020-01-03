@@ -3,6 +3,7 @@ import { ScrollView } from 'react-native'
 import YourTrack from '../Track/YourTrack'
 import MoreOptsModal from '../Modals/MoreOpts'
 import EditTrackModal from '../Modals/EditTrack'
+import AddToPlaylistModal from '../Modals/AddToPlaylist'
 
 const DEFAULT_LIST = ['123', '234', '345', '456', '567', '678'];
 const OPTIONS = [
@@ -19,6 +20,7 @@ class YourTracksList extends Component {
     this.state = {
       optsVisible: false,
       editVisible: false,
+      addPLvisible: false,
     }
   }
 
@@ -40,6 +42,9 @@ class YourTracksList extends Component {
         <EditTrackModal visible={this.state.editVisible}
           track={this._track}
           hideModal={() => this.setState({ editVisible: false })} />
+        <AddToPlaylistModal visible={this.state.addPLvisible}
+          track={this._track}
+          hideModal={() => this.setState({ addPLvisible: false })} />
       </>
     )
   }
@@ -51,6 +56,7 @@ class YourTracksList extends Component {
         break;
 
       case 2:
+        this.setState({ addPLvisible: true });
         break;
 
       default:
