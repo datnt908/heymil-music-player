@@ -1,0 +1,126 @@
+.header {
+  height: 64;
+  background-color: #0d0d0d;
+  padding: 0px 0px 0px 13.5px;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.title {
+  font-family: "Exo-Bold";
+  color: #f2f2f2;
+  font-size: 20;
+  padding-left: 36px;
+}
+
+.iconContainer {
+  width: 32;
+  height: 32;
+  padding: 10.5px;
+}
+
+.infoTrack {
+  height: 72px;
+  background-color: #0d0d0d;
+  border-radius: 0px 0px 12px 12px;
+}
+
+.contents {
+  padding-left: 24px;
+  padding-right: 24px;
+  margin-top: 24px;
+  margin-bottom: 24px;
+}
+
+.optionTitle {
+  font-family: "Exo-SemiBold";
+  color: #404040;
+  font-size: 16;
+  line-height: 20px;
+  margin-bottom: 16px;
+}
+
+.separatedLine {
+  border-bottom-color: #bfbfbf;
+  border-bottom-width: 1px;
+  margin: 11px 0px 36px 0px;
+}
+
+.plContainer {
+  flex-direction: row;
+  margin-bottom: 16px;
+  align-items: center;
+}
+
+.image {
+  height: 48;
+  width: 48;
+  border-radius: 8px;
+  margin-right: 12px;
+}
+
+.images {
+  flex-direction: row;
+  justify-content: space-between;
+  width: 240px;
+  height: 120px;
+  margin-bottom: 16px;
+}
+
+.image0 {
+  width: 179px;
+  height: 120px;
+  border-radius: 8px 0px 0px 8px;
+  background-color: #bfbfbf;
+}
+
+.image1 {
+  width: 59px ;
+  height: 59px;
+  border-radius: 0px 8px 0px 0px;
+  background-color: #bfbfbf;
+}
+
+.image2 {
+  width: 59px ;
+  height: 59px;
+  border-radius: 0px 0px 8px 0px;
+  background-color: #bfbfbf;
+}
+
+.plName {
+  font-family: "Exo-SemiBold";
+  color: #404040;
+  font-size: 14;
+  line-height: 18px;
+  margin-bottom: 2px;
+}
+
+.textInput {
+  width: 100%;
+  height: 36px;
+  padding: 0px 10px;
+  border: 1px solid #404040;
+  border-radius: 8px;
+  font-family: "Exo-Regular";
+  font-size: 14px;
+  color: #404040;
+  background-color: #ffffff;
+  margin-bottom: 16px;
+}
+
+.button {
+  height: 36px;
+  width: 96px;
+  background-color: #0d0d0d;
+  border-radius: 4px;
+  justify-content: center;
+  align-items: center;
+}
+
+.buttonLabel {
+  color: #f2f2f2;
+  font-size: 14px;
+  font-family: "Exo-Bold";
+}

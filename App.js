@@ -5,6 +5,7 @@ import Controller from './src/components/Controller'
 import YourTracksScreen from './src/screens/YourTracks'
 import { View, StyleSheet, AppState } from 'react-native'
 import { savePlayer } from './src/utils/database/PlayerDAL'
+import YourPlaylistsScreen from './src/screens/YourPlaylists'
 import { Route, Navigator } from './src/components/Navigator'
 import { playerUpdateQueue } from './src/redux/actions/playerActions'
 import { yourTracksLoadTracks } from './src/redux/actions/yourTracksActions'
@@ -42,7 +43,8 @@ class App extends Component {
       <Provider store={App.store}>
         <View style={[styles.container]}>
           <Navigator>
-            <Route name="YourTracksScreen" component={YourTracksScreen} />
+            <Route name="Your Playlists" component={YourPlaylistsScreen} />
+            <Route name="Your Tracks" component={YourTracksScreen} />
           </Navigator>
           <Controller />
         </View>

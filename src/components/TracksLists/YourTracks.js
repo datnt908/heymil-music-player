@@ -5,6 +5,7 @@ import YourTrack from '../Track/YourTrack'
 import { bindActionCreators } from 'redux'
 import MoreOptsModal from '../Modals/MoreOpts'
 import EditTrackModal from '../Modals/EditTrack'
+import AddToPlaylistModal from '../Modals/AddToPlaylist'
 import { delTrack, getPlayerQueue } from '../../models/Player'
 import { playerUpdateQueue } from '../../redux/actions/playerActions'
 import { yourTracksDeleteTrack } from '../../redux/actions/yourTracksActions'
@@ -22,6 +23,7 @@ class YourTracksList extends Component {
     this.state = {
       optsVisible: false,
       editVisible: false,
+      addPLvisible: false,
     }
   }
 
@@ -43,6 +45,9 @@ class YourTracksList extends Component {
         <EditTrackModal visible={this.state.editVisible}
           track={this._track}
           hideModal={() => this.setState({ editVisible: false })} />
+        <AddToPlaylistModal visible={this.state.addPLvisible}
+          track={this._track}
+          hideModal={() => this.setState({ addPLvisible: false })} />
       </>
     )
   }
@@ -63,6 +68,7 @@ class YourTracksList extends Component {
         break;
 
       case 2:
+        this.setState({ addPLvisible: true });
         break;
 
       default:

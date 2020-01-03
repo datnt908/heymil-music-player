@@ -1,7 +1,7 @@
-import React, { Component } from 'react'
-import { Text, View, TouchableOpacity } from 'react-native'
-import { BarSolidSVGR } from '../../assets/icons'
 import styles from './styles.scss'
+import React, { Component } from 'react'
+import { BarSolidSVGR } from '../../assets/icons'
+import { Text, View, TouchableOpacity } from 'react-native'
 
 class Header extends Component {
   render() {
@@ -21,7 +21,7 @@ class Header extends Component {
   }
 
   onRightIconPress = () => {
-    console.log("Header.onRightIconPress");
+    this.props.navigator.show();
   }
 }
 
