@@ -1,49 +1,40 @@
 import Playlist from './Playlist'
 import styles from './styles.scss'
+import { connect } from 'react-redux'
 import React, { Component } from 'react'
 import { View, PanResponder, Animated } from 'react-native'
 import PlaylistTracksList from '../TracksLists/PlaylistTracks'
 
-const DEFAULT_PLAYLISTS = [
-  { playlistName: "123", tracks: [1, 2, 3] },
-  { playlistName: "23", tracks: [2, 3] },
-  { playlistName: "nul", tracks: [] }
-]
-
 class PlaylistsList extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      currentPlaylist: 0,
-    }
     this._animatedValue = new Animated.Value(0);
     this.createPanResponder();
-    this.LIST_WIDTH = DEFAULT_PLAYLISTS.length * 264;
+    this.LIST_WIDTH = this.props.playlists.length * 264;
   }
 
   render() {
     const transformStyle = { transform: [{ translateX: this._animatedValue }] };
+    const currentTracks = this.props.playlists[this.props.currentIndex] ?
+      this.props.playlists[this.props.currentIndex].tracks : [];
+
     return (
       <>
         <Animated.View style={[styles.hList, transformStyle]}
           {...this._panResponder.panHandlers}>
           {
-            DEFAULT_PLAYLISTS.map((value, index) => {
-              return (
-                <Playlist key={index} playlist={value}>
-                </Playlist>
-              )
+            this.props.playlists.map(value => {
+              return (<Playlist key={value.id} playlist={value} />)
             })
           }
         </Animated.View>
         <View style={[styles.tracksList]}>
-          <PlaylistTracksList
-            tracks={DEFAULT_PLAYLISTS[this.state.currentPlaylist].tracks} />
+          <PlaylistTracksList tracks={currentTracks}
+            currentIndex={this.props.currentIndex} />
         </View>
       </>
     )
   }
-
 
   createPanResponder = () => {
     this._panResponder = PanResponder.create({
@@ -53,7 +44,6 @@ class PlaylistsList extends Component {
       onPanResponderRelease: this.onPanResponderRelease,
     });
   }
-
   onMoveShouldSetPanResponder = (evt, gestureState) => true
   onPanResponderGrant = (evt, gestureState) => {
     this._tempAnimateValue = this._animatedValue.__getValue();
@@ -68,15 +58,20 @@ class PlaylistsList extends Component {
   onPanResponderRelease = (evt, gestureState) => {
     let index = -Math.round(this._animatedValue.__getValue() / 264);
     if (index < 0) index = 0;
-    if (index >= DEFAULT_PLAYLISTS.length) index = DEFAULT_PLAYLISTS.length - 1;
+    if (index >= this.props.playlists.length)
+      index = this.props.playlists.length - 1;
     const newAnimatedValue = -index * 264;
     Animated.timing(this._animatedValue, {
       toValue: newAnimatedValue, duration: 150, useNativeDriver: true
     }).start(() => {
       this._animatedValue.setValue(newAnimatedValue);
-      this.setState({ currentPlaylist: index });
+      this.props.onCurrentChange(index);
     });
   }
 }
 
-export default PlaylistsList
+const mapStateToProps = (state) => ({
+  playlists: state.playlists,
+})
+
+export default connect(mapStateToProps, null)(PlaylistsList)

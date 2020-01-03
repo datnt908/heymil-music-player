@@ -2,6 +2,9 @@ import React, { Component } from 'react'
 import { ScrollView } from 'react-native'
 import MoreOptsModal from '../Modals/MoreOpts'
 import PlaylistTrack from '../Track/PlaylistTrack'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import { playlistsDeleteTrack } from '../../redux/actions/playlistsActions'
 
 const OPTIONS = [
   'Remove track',
@@ -22,7 +25,7 @@ class PlaylistTracksList extends Component {
         <ScrollView style={{ felx: 1 }}>
           {
             this.props.tracks.map(value => {
-              return <PlaylistTrack key={value}
+              return <PlaylistTrack key={value.id} track={value}
                 onClickMoreOpts={this.onTrackClickMoreOpts} />
             })
           }
@@ -38,10 +41,10 @@ class PlaylistTracksList extends Component {
   onOptionPress = (index) => {
     switch (index) {
       case 0:
-        console.log("Remove track from Playlist")
+        this.props.playlistsDeleteTrack(this.props.currentIndex, this._track);
         break;
 
-         default:
+      default:
         break;
     }
   }
@@ -52,4 +55,8 @@ class PlaylistTracksList extends Component {
   }
 }
 
-export default PlaylistTracksList
+const mapDispatchToProps = (dispatch) => ({
+  playlistsDeleteTrack: bindActionCreators(playlistsDeleteTrack, dispatch),
+})
+
+export default connect(null, mapDispatchToProps)(PlaylistTracksList)

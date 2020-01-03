@@ -7,25 +7,23 @@ import DEFAULT_ARTWORK from '../../assets/images/default-artwork.png'
 class Playlist extends Component {
 
   render() {
-    const imgSource0 = getImgSourceFromTrack(this.props.playlist.tracks[0]);
-    const imgSource1 = getImgSourceFromTrack(this.props.playlist.tracks[1]);
-    const imgSource2 = getImgSourceFromTrack(this.props.playlist.tracks[2]);
+    const imgSources = this.props.playlist.getTop3ImgSources();
 
     return (
       <View style={[styles.playlist]}>
         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-          <Image style={[styles.image0]} source={imgSource0}/>
+          <Image style={[styles.image0]} source={imgSources[0]}/>
           <View style={{ justifyContent: "space-between" }}>
-            <Image style={[styles.image1]} source={imgSource1}/>
-            <Image style={[styles.image2]} source={imgSource2}/>
+            <Image style={[styles.image1]} source={imgSources[1]}/>
+            <Image style={[styles.image2]} source={imgSources[2]}/>
           </View>
         </View>
         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
           <Text style={[styles.playlistName]}>
-            {this.props.playlist.playlistName}
+            {this.props.playlist.name}
           </Text>
           <Text style={[styles.tracksCount]}>
-            {this.props.playlist.tracks.length}
+            {this.props.playlist.tracks.length} track(s)
           </Text>
         </View>
       </View>

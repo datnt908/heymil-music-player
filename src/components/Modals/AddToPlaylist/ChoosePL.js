@@ -1,16 +1,6 @@
 import styles from './styles.scss'
 import React, { Component } from 'react'
-import { Text, View, Image } from 'react-native'
-import DEFAULT_ARTWORK from '../../../assets/images/default-artwork.png'
-import { UI_CONSTANTS } from '../../../utils/helperFunctions'
-
-const DEFAULT_PLAYLIST = {
-  name: "Playlist name",
-  firstTrackArtwork: UI_CONSTANTS.ARTWORK_URI,
-}
-
-const DEFAULT_PLAYLISTS = [DEFAULT_PLAYLIST, DEFAULT_PLAYLIST, DEFAULT_PLAYLIST, DEFAULT_PLAYLIST];
-
+import { Text, View, Image, TouchableOpacity } from 'react-native'
 
 class ChoosePL extends Component {
   render() {
@@ -18,10 +8,9 @@ class ChoosePL extends Component {
       <>
         <Text style={[styles.optionTitle]}>Choose existed Playlist</Text>
         {
-          DEFAULT_PLAYLISTS.map((value, index) => {
-            return(
-              <Playlist key={index} playlist={value}/>
-            )
+          this.props.playlists.map(value => {
+            return (<Playlist key={value.id} playlist={value} 
+              onPress={this.props.onPLpress}/>)
           })
         }
         <View style={[styles.separatedLine]} />
@@ -33,18 +22,14 @@ class ChoosePL extends Component {
 export default ChoosePL
 
 class Playlist extends Component {
-  constructor(props) {
-    super(props);
-    this._artwork = props.playlist.firstTrackArtwork === UI_CONSTANTS.ARTWORK_URI ?
-      DEFAULT_ARTWORK : { uri: props.playlist.firstTrackArtwork };
-  }
-
   render() {
+    const imgSources = this.props.playlist.getTop3ImgSources();
     return (
-      <View style={[styles.plContainer]}>
-        <Image style={[styles.image]} source={this._artwork}/>
+      <TouchableOpacity style={[styles.plContainer]}
+        onPress={() => this.props.onPress(this.props.playlist.id)}> 
+        <Image style={[styles.image]} source={imgSources[0]} />
         <Text style={[styles.plName]}>{this.props.playlist.name}</Text>
-      </View>
+      </TouchableOpacity>
     )
   }
 }

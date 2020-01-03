@@ -23,7 +23,7 @@ class CreateNew extends Component {
           </View>
         </View>
         <Text style={[styles.plName]}>Playlist name</Text>
-        <TextInput style={[styles.textInput]}
+        <TextInput style={[styles.textInput]} maxLength={48}
           onChangeText={text => this.setState({ text: text })}
           value={this.state.text} />
         <TouchableOpacity style={[styles.button]}

@@ -18,6 +18,8 @@ export default (state = INITIAL_STATE, action) => {
 
     case YOUR_TRACKS_DELETE_TRACK:
       newTracks = yourTracksDeleteTrack(state, action.payload);
+      if (newTracks.length === state.length)
+        return state;
       return newTracks;
 
     case YOUR_TRACKS_UPDATE_TRACK:
