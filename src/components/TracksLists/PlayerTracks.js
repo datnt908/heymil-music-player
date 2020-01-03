@@ -1,7 +1,7 @@
-import MoreOpts from '../Modals/MoreOpts'
 import React, { Component } from 'react'
 import { ScrollView } from 'react-native'
 import PlayerTrack from '../Track/PlayerTrack'
+import MoreOptsModal from '../Modals/MoreOpts'
 
 const DEFAULT_LIST = ['123', '234', '345', '456'];
 const OPTIONS = [
@@ -30,10 +30,10 @@ class PlayerTracksList extends Component {
             })
           }
         </ScrollView>
-        <MoreOpts title="Options" opts={OPTIONS}
+        <MoreOptsModal title="Options" opts={OPTIONS}
           visible={this.state.optsVisible}
           onOptionPress={this.onOptionPress}
-          hideModal={this.hideModal} />
+          hideModal={() => this.setState({ optsVisible: false })} />
       </>
     )
   }
@@ -50,10 +50,6 @@ class PlayerTracksList extends Component {
       default:
         break;
     }
-  }
-
-  hideModal = () => {
-    this.setState({ optsVisible: false });
   }
 
   onTrackClickMoreOpts = (track) => {

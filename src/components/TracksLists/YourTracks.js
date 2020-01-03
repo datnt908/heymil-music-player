@@ -1,7 +1,8 @@
-import MoreOpts from '../Modals/MoreOpts'
 import React, { Component } from 'react'
 import { ScrollView } from 'react-native'
 import YourTrack from '../Track/YourTrack'
+import MoreOptsModal from '../Modals/MoreOpts'
+import EditTrackModal from '../Modals/EditTrack'
 
 const DEFAULT_LIST = ['123', '234', '345', '456', '567', '678'];
 const OPTIONS = [
@@ -17,6 +18,7 @@ class YourTracksList extends Component {
     this._track = null;
     this.state = {
       optsVisible: false,
+      editVisible: false,
     }
   }
 
@@ -31,30 +33,29 @@ class YourTracksList extends Component {
             })
           }
         </ScrollView>
-        <MoreOpts title="Options" opts={OPTIONS}
+        <MoreOptsModal title="Options" opts={OPTIONS}
           visible={this.state.optsVisible}
           onOptionPress={this.onOptionPress}
-          hideModal={this.hideModal} />
+          hideModal={() => this.setState({ optsVisible: false })} />
+        <EditTrackModal visible={this.state.editVisible}
+          track={this._track}
+          hideModal={() => this.setState({ editVisible: false })} />
       </>
     )
   }
 
   onOptionPress = (index) => {
-    console.log(OPTIONS[index]);
-    console.log(this._track);
     switch (index) {
       case 0:
+        this.setState({ editVisible: true });
         break;
 
       case 2:
         break;
+
       default:
         break;
     }
-  }
-
-  hideModal = () => {
-    this.setState({ optsVisible: false });
   }
 
   onTrackClickMoreOpts = (track) => {
