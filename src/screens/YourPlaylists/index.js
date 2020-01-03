@@ -1,9 +1,12 @@
 import styles from './styles.scss'
 import React, { Component } from 'react'
 import Header from '../../components/Header'
-import FilesPicker from '../../utils/FilesPicker'
+import { TimesSolidSVGR } from '../../assets/icons'
 import { UI_CONSTANTS } from '../../utils/helperFunctions'
-import { View, PanResponder, Animated, ScrollView } from 'react-native'
+import PlaylistsList from '../../components/PlaylistsList'
+import { View, PanResponder, Animated } from 'react-native'
+
+const TimesSolidSVGRJSX = <TimesSolidSVGR width="100%" height="100%" fill="#404040" />
 
 class YourPlaylistsScreen extends Component {
   constructor(props) {
@@ -13,15 +16,15 @@ class YourPlaylistsScreen extends Component {
   }
 
   render() {
-    console.log('YourPlaylistsScreen.render');
     const transformStyle = { transform: [{ translateY: this._animatedValue }] };
     return (
       <View style={[styles.container]}>
         <Header title="Your Playlists" 
-          navigator={this.props.navigator} />
+          navigator={this.props.navigator}
+          leftIconElement={TimesSolidSVGRJSX}
+          onLeftIconPress={this.onLeftIconPress} />
         <Animated.View style={[styles.contents, transformStyle]}>
-          <ScrollView style={{ flex: 1 }} >
-          </ScrollView>
+          <PlaylistsList />
           <View style={[styles.anchorContainer]}>
             <View style={{ backgroundColor: "#f2f2f2" }}
               {...this._panResponder.panHandlers}>
@@ -34,11 +37,7 @@ class YourPlaylistsScreen extends Component {
   }
 
   onLeftIconPress = () => {
-    FilesPicker.showAudioFilesPickerDialog().then(selectedFiles => {
-      selectedFiles.forEach(selectedFile => {
-        console.log(selectedFile);
-      });
-    }).catch(e => console.log(e));
+    console.log("YourPlaylistsScreen.onLeftIconPress");
   }
 
   createPanResponder = () => {
