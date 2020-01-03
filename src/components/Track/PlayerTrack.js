@@ -12,6 +12,7 @@ import { playerPlayPause } from '../../redux/actions/playerActions'
 
 class PlayerTrack extends Track {
   render() {
+    this.baseUpdateData();
     const durationMMSS = convertSecondToMMSS(this._track.duration);
     const containerStyle = [styles.container];
     if (this.props.isRunning) containerStyle.push(styles.running);

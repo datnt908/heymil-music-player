@@ -11,8 +11,8 @@ import { playerUpdateQueue } from '../../redux/actions/playerActions'
 
 class YourTrack extends Track {
   render() {
+    this.baseUpdateData();
     const durationMMSS = convertSecondToMMSS(this._track.duration);
-
     return (
       <View style={[styles.container]}>
         <TouchableOpacity onPress={this.onTrackPress}

@@ -1,11 +1,14 @@
 import EditText from './EditText'
 import TrackHeader from './Header'
+import { connect } from 'react-redux'
 import EditArtwork from './EditArtwork'
 import React, { Component } from 'react'
 import { View, Modal } from 'react-native'
-import FilesPicker from '../../../utils/FilesPicker'
+import { bindActionCreators } from 'redux'
 import { UI_CONSTANTS } from '../../../utils/helperFunctions'
+import { showImageFilePickerDialog } from '../../../utils/FilesPicker'
 import DEFAULT_ARTWORK from '../../../assets/images/default-artwork.png'
+import { yourTracksUpdateTrack } from '../../../redux/actions/yourTracksActions'
 
 class EditTrackModal extends Component {
   constructor(props) {
@@ -57,20 +60,25 @@ class EditTrackModal extends Component {
   }
 
   onDonePress = () => {
-    const track = { ...this.props.track,
+    const track = {
+      ...this.props.track,
       title: this.state.title,
       artist: this.state.artist,
       artwork: this.state.artwork,
     }
-    console.log(track);
+    this.props.yourTracksUpdateTrack(track);
     this.props.hideModal();
   }
 
   onArtworkPress = async () => {
-    const selectedFile = await FilesPicker.showImageFilePickerDialog();
-    this._artwork = { uri: selectedFile.filePath };
-    this.setState({ artwork: selectedFile.filePath });
+    const selectedFile = await showImageFilePickerDialog();
+    this._artwork = { uri: selectedFile.path };
+    this.setState({ artwork: selectedFile.path });
   }
 }
 
-export default EditTrackModal
+const mapDispatchToProps = (dispatch) => ({
+  yourTracksUpdateTrack: bindActionCreators(yourTracksUpdateTrack, dispatch),
+})
+
+export default connect(null, mapDispatchToProps)(EditTrackModal)

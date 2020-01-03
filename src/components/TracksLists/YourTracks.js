@@ -2,13 +2,12 @@ import { connect } from 'react-redux'
 import React, { Component } from 'react'
 import { ScrollView } from 'react-native'
 import YourTrack from '../Track/YourTrack'
+import { bindActionCreators } from 'redux'
 import MoreOptsModal from '../Modals/MoreOpts'
 import EditTrackModal from '../Modals/EditTrack'
-import { connect } from 'react-redux'
-import { bindActionCreators } from 'redux'
-import { yourTracksDeleteTrack } from '../../redux/actions/yourTracksActions'
 import { delTrack, getPlayerQueue } from '../../models/Player'
 import { playerUpdateQueue } from '../../redux/actions/playerActions'
+import { yourTracksDeleteTrack } from '../../redux/actions/yourTracksActions'
 
 const OPTIONS = [
   'Edit track',
@@ -48,7 +47,7 @@ class YourTracksList extends Component {
     )
   }
 
-  onOptionPress = (index) => {
+  onOptionPress = async (index) => {
     switch (index) {
       case 0:
         this.setState({ editVisible: true });
