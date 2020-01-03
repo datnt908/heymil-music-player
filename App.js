@@ -1,15 +1,17 @@
 import React, { Component } from 'react'
 import { View, StyleSheet } from 'react-native'
 import Controller from './src/components/Controller'
-import { Route, Navigator} from './src/components/Navigator'
 import YourTracksScreen from './src/screens/YourTracks'
+import { Route, Navigator} from './src/components/Navigator'
+import YourPlaylistsScreen from './src/screens/YourPlaylists'
 
 class App extends Component {
   render() {
     return (
       <View style={[styles.container]}>
         <Navigator>
-          <Route name="YourTracksScreen" component={YourTracksScreen} />
+          <Route name="Your Playlists" component={YourPlaylistsScreen} />
+          <Route name="Your Tracks" component={YourTracksScreen} />
         </Navigator>
         <Controller />
       </View>

@@ -1,9 +1,9 @@
+import styles from './styles.scss'
 import React, { Component } from 'react'
-import { View, PanResponder, Animated, ScrollView } from 'react-native'
 import Header from '../../components/Header'
 import { TimesSolidSVGR } from '../../assets/icons'
 import { UI_CONSTANTS } from '../../utils/helperFunctions'
-import styles from './styles.scss'
+import { View, PanResponder, Animated, ScrollView } from 'react-native'
 import PlayerTracksList from '../../components/TracksLists/PlayerTracks'
 
 const TimesSolidSVGRJSX = <TimesSolidSVGR width="100%" height="100%" fill="#404040" />
@@ -24,7 +24,9 @@ class PlayerTracksScreen extends Component {
     panContainerStyle.push(transformStyle);
     return (
       <View style={[styles.container]}>
-        <Header title="Player Tracks" leftIconElement={TimesSolidSVGRJSX}
+        <Header title="Player Tracks"
+          navigator={this.props.navigator}
+          leftIconElement={TimesSolidSVGRJSX}
           onLeftIconPress={this.onLeftIconPress} />
         <Animated.View style={panContainerStyle}>
           <View style={{ backgroundColor: "#f2f2f2" }}
