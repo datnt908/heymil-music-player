@@ -53,8 +53,6 @@ class PlayerTrack extends Track {
         }
       } else {
         await RNTP.skip(this._track.id);
-        const playerQueue = await getPlayerQueue();
-        this.props.playerUpdateQueue(playerQueue);
       }
     } catch (e) { console.log(e); }
   }

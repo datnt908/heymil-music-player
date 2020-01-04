@@ -32,13 +32,13 @@ export class Navigator extends Component {
     return (
       <View style={{ flex: 1 }}>
         <PlayerTracksScreen navigator={{
-          unhide: () => this.setState({isHiding: false}),
-          show: () => this.setState({menuVisible: true}),
+          unhide: () => this.setState({ isHiding: false }),
+          show: () => this.setState({ menuVisible: true }),
         }} />
         <Animated.View style={[screenStyle]}>
           <CurrentScreen navigator={{
-            hide: () => this.setState({isHiding: true}),
-            show: () => this.setState({menuVisible: true}),
+            hide: () => this.setState({ isHiding: true }),
+            show: () => this.setState({ menuVisible: true }),
           }} />
         </Animated.View>
         <MoreOpts title="Heymil's Menu" opts={SCREENS}
@@ -50,17 +50,16 @@ export class Navigator extends Component {
   }
 
   handleNavigate = (index) => {
+    if (this.state.isHiding) {
+      this.setState({ isHiding: false });
+      this._animatedValue.setValue(SCREEN_TOP);
+      Animated.timing(this._animatedValue, {
+        toValue: 0, duration: 250, useNativeDriver: true,
+      }).start();
+    }
     if (this.state.currentScreenName !== SCREENS[index]) {
       this.setState({
         currentScreenName: SCREENS[index],
-      }, () => {
-        if (this.state.isHiding) {
-          this.setState({ isHiding: false });
-          this._animatedValue.setValue(SCREEN_TOP);
-          Animated.timing(this._animatedValue, {
-            toValue: 0, duration: 250, useNativeDriver: true,
-          }).start();
-        }
       });
     }
   }

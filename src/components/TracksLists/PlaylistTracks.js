@@ -1,9 +1,9 @@
+import { connect } from 'react-redux'
 import React, { Component } from 'react'
 import { ScrollView } from 'react-native'
+import { bindActionCreators } from 'redux'
 import MoreOptsModal from '../Modals/MoreOpts'
 import PlaylistTrack from '../Track/PlaylistTrack'
-import { connect } from 'react-redux'
-import { bindActionCreators } from 'redux'
 import { playlistsDeleteTrack } from '../../redux/actions/playlistsActions'
 
 const OPTIONS = [
@@ -26,7 +26,8 @@ class PlaylistTracksList extends Component {
           {
             this.props.tracks.map(value => {
               return <PlaylistTrack key={value.id} track={value}
-                onClickMoreOpts={this.onTrackClickMoreOpts} />
+                onClickMoreOpts={this.onTrackClickMoreOpts}
+                onTrackPress={this.props.onTrackPress} />
             })
           }
         </ScrollView>

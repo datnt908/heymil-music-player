@@ -32,13 +32,3 @@ class Playlist extends Component {
 }
 
 export default Playlist
-
-const getImgSourceFromTrack = (track) => {
-  if (track) {
-    const artwork = track.artwork;
-    const imgSource = artwork === UI_CONSTANTS.DEFAULT_PLAYLIST ?
-      DEFAULT_ARTWORK : { uri: artwork };
-    return imgSource;
-  }
-  return null;
-}

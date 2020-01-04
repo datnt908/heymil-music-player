@@ -6,6 +6,7 @@ import PlayerTrack from '../Track/PlayerTrack'
 import MoreOptsModal from '../Modals/MoreOpts'
 import { delTrack, getPlayerQueue } from '../../models/Player'
 import { playerUpdateQueue } from '../../redux/actions/playerActions'
+import AddToPlaylistModal from '../Modals/AddToPlaylist'
 
 const OPTIONS = [
   'Remove track',
@@ -18,6 +19,7 @@ class PlayerTracksList extends Component {
     this._track = null;
     this.state = {
       optsVisible: false,
+      addPLvisible: false,
     }
   }
 
@@ -37,6 +39,9 @@ class PlayerTracksList extends Component {
           visible={this.state.optsVisible}
           onOptionPress={this.onOptionPress}
           hideModal={() => this.setState({ optsVisible: false })} />
+        <AddToPlaylistModal visible={this.state.addPLvisible}
+          track={this._track}
+          hideModal={() => this.setState({ addPLvisible: false })} />
       </>
     )
   }
@@ -51,8 +56,10 @@ class PlayerTracksList extends Component {
         } catch (e) { console.log(e); }
         break;
 
-      case 2:
+      case 1:
+        this.setState({ addPLvisible: true });
         break;
+        
       default:
         break;
     }

@@ -11,6 +11,8 @@ import { playerUpdateQueue } from './src/redux/actions/playerActions'
 import { yourTracksLoadTracks } from './src/redux/actions/yourTracksActions'
 import { loadAllTracks, saveAllTracks } from './src/utils/database/TrackDAL'
 import { RNTPOptions, loadFromSchema, getPlayerQueue } from './src/models/Player'
+import { loadAllPlaylistSchemas, saveAllPlaylists } from './src/utils/database/PlaylistDAL'
+import { playlistsLoadPlaylists } from './src/redux/actions/playlistsActions'
 
 class App extends Component {
   static store = null;
@@ -26,11 +28,16 @@ class App extends Component {
   componentDidMount = async () => {
     AppState.addEventListener('change', this.onAppStateChange);
     try {
+      // Load your tracks
       const tracks = await loadAllTracks();
       App.store.dispatch(yourTracksLoadTracks(tracks));
+      // Load Player tracks
       await loadFromSchema(tracks);
       const playerQueue = await getPlayerQueue();
       App.store.dispatch(playerUpdateQueue(playerQueue));
+      // Load Playlist
+      const playlistSchemas = await loadAllPlaylistSchemas();
+      App.store.dispatch(playlistsLoadPlaylists(tracks, playlistSchemas));
     } catch (e) { console.log(e); }
   }
 
@@ -57,6 +64,7 @@ class App extends Component {
       try {
         await saveAllTracks(App.store.getState().yourTracks);
         await savePlayer(App.store.getState().player);
+        await saveAllPlaylists(App.store.getState().playlists);
       } catch (e) { console.log(e); }
     }
     this.state.appState = nextAppState;

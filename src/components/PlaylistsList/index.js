@@ -4,6 +4,9 @@ import { connect } from 'react-redux'
 import React, { Component } from 'react'
 import { View, PanResponder, Animated } from 'react-native'
 import PlaylistTracksList from '../TracksLists/PlaylistTracks'
+import { bindActionCreators } from 'redux'
+import { playerUpdateQueue } from '../../redux/actions/playerActions'
+import { addPlaylist, getPlayerQueue } from '../../models/Player'
 
 class PlaylistsList extends Component {
   constructor(props) {
@@ -30,10 +33,17 @@ class PlaylistsList extends Component {
         </Animated.View>
         <View style={[styles.tracksList]}>
           <PlaylistTracksList tracks={currentTracks}
+            onTrackPress={this.onTrackPress}
             currentIndex={this.props.currentIndex} />
         </View>
       </>
     )
+  }
+
+  onTrackPress = async (id) => {
+    await addPlaylist(this.props.playlists[this.props.currentIndex], id);
+    const playerQueue = await getPlayerQueue();
+    this.props.playerUpdateQueue(playerQueue);
   }
 
   createPanResponder = () => {
@@ -74,4 +84,8 @@ const mapStateToProps = (state) => ({
   playlists: state.playlists,
 })
 
-export default connect(mapStateToProps, null)(PlaylistsList)
+const mapDispatchToProps = (dispatch) => ({
+  playerUpdateQueue: bindActionCreators(playerUpdateQueue, dispatch),
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(PlaylistsList)

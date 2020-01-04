@@ -11,7 +11,7 @@ class PlaylistTrack extends Track {
 
     return (
       <View style={[styles.container]}>
-        <TouchableOpacity onPress={this.onTrackPress}
+        <TouchableOpacity onPress={() => this.props.onTrackPress(this._track.id)}
           style={{ flexDirection: "row", alignItems: "center" }}>
           <Image style={[styles.image]} source={this._artwork} />
           <View style={{ marginLeft: 12 }}>
@@ -32,11 +32,6 @@ class PlaylistTrack extends Track {
       </View>
     )
   }
-
-  onTrackPress = () => {
-    console.log('PlaylistTrack.onTrackPress');
-  }
-
 }
 
 export default PlaylistTrack

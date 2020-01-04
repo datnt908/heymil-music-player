@@ -1,4 +1,11 @@
-import { PLAYLISTS_CREATE_PLAYLIST, PLAYLISTS_DELETE_PLAYLIST, PLAYLISTS_DELETE_TRACK, PLAYLISTS_ADD_TRACK } from "../actions/playlistsActions";
+import {
+  PLAYLISTS_CREATE_PLAYLIST,
+  PLAYLISTS_DELETE_PLAYLIST,
+  PLAYLISTS_DELETE_TRACK,
+  PLAYLISTS_ADD_TRACK,
+  PLAYLISTS_LOAD_PLAYLISTS
+} from "../actions/playlistsActions";
+import Playlist from '../../models/Playlist'
 
 const INITIAL_STATE = []
 
@@ -23,6 +30,10 @@ export default (state = INITIAL_STATE, action) => {
       newPlaylists = playlistsAddTrack(state, action.payload.plID, action.payload.track);
       if (!newPlaylists)
         return state;
+      return newPlaylists;
+
+    case PLAYLISTS_LOAD_PLAYLISTS:
+      newPlaylists = playlistsLoadPlaylists(state, action.payload.yourTracks, action.payload.playlistSchemas);
       return newPlaylists;
 
     default:
@@ -67,7 +78,7 @@ const playlistsAddTrack = (currentPlaylists, plID, addTrack) => {
       plIndex = i; break;
     }
   if (plIndex >= 0) {
-    const playlist = Object.create(currentPlaylists[plIndex]);
+    let playlist = Object.create(currentPlaylists[plIndex]);
     let trackIndex = -1;
     for (let i = 0; i < playlist.tracks.length; ++i)
       if (playlist.tracks[i].id === addTrack.id) {
@@ -81,4 +92,20 @@ const playlistsAddTrack = (currentPlaylists, plID, addTrack) => {
     }
   }
   return null;
+}
+
+export const playlistsLoadPlaylists = (currentPlaylists, tracks, schemas) => {
+  const playlists = [];
+  schemas.forEach(schema => {
+    const playlist = new Playlist(schema.name);
+    playlist.id = schema.id;
+    schema.trackIDs.forEach(trackID => {
+      for (let i = 0; i < tracks.length; ++i)
+        if (tracks[i].id === trackID) {
+          playlist.addTrack(tracks[i]); break;
+        }
+    });
+    playlists.push(playlist);
+  });
+  return playlists;
 }
