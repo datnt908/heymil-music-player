@@ -3,6 +3,7 @@ import { getRandomInt } from '../utils/helperFunctions';
 import { loadPlayerSchema } from '../utils/database/PlayerDAL';
 
 export const RNTPOptions = {
+  stopWithApp: true,
   capabilities: [
     RNTP.CAPABILITY_STOP,
     RNTP.CAPABILITY_PLAY,
@@ -98,4 +99,13 @@ export const onTrackEnd = async (track, position, isRepeat, isShuffle) => {
         await skipToNext(isShuffle);
       }
     } catch (e) { console.log(e); }
+}
+
+export const addPlaylist = async (playlist, trackID) => {
+  if (playlist) {
+    const tempPlaylist = Object.create(playlist);
+    await RNTP.reset();
+    await RNTP.add(tempPlaylist.tracks);
+    await RNTP.skip(trackID);
+  }
 }

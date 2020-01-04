@@ -3,21 +3,19 @@ import { connect } from 'react-redux'
 import React, { Component } from 'react'
 import { bindActionCreators } from 'redux'
 import Header from '../../components/Header'
-import { PlusSolidSVGR } from '../../assets/icons'
-import { getTrackFromFile } from '../../models/Track'
-import { readMp3Duration } from '../../utils/Mp3Reader'
+import { TimesSolidSVGR } from '../../assets/icons'
+import PlaylistsList from '../../components/PlaylistsList'
 import { UI_CONSTANTS } from '../../utils/helperFunctions'
-import YourTracksList from '../../components/TracksLists/YourTracks'
-import { showAudioFilesPickerDialog } from '../../utils/FilesPicker'
-import { View, PanResponder, Animated, ScrollView } from 'react-native'
-import { yourTracksAddTrack } from '../../redux/actions/yourTracksActions'
+import { View, PanResponder, Animated } from 'react-native'
+import { playlistsDeletePlaylist } from '../../redux/actions/playlistsActions'
 
-const PlusSolidSVGRJSX = <PlusSolidSVGR width="100%" height="100%" fill="#404040" />
+const TimesSolidSVGRJSX = <TimesSolidSVGR width="100%" height="100%" fill="#404040" />
 
-class YourTracksScreen extends Component {
+class YourPlaylistsScreen extends Component {
   constructor(props) {
     super(props);
     this._animatedValue = new Animated.Value(0);
+    this.state = { currentIndex: 0 }
     this.createPanResponder();
   }
 
@@ -25,14 +23,13 @@ class YourTracksScreen extends Component {
     const transformStyle = { transform: [{ translateY: this._animatedValue }] };
     return (
       <View style={[styles.container]}>
-        <Header title="Your Tracks"
+        <Header title="Your Playlists"
           navigator={this.props.navigator}
-          leftIconElement={PlusSolidSVGRJSX}
+          leftIconElement={TimesSolidSVGRJSX}
           onLeftIconPress={this.onLeftIconPress} />
         <Animated.View style={[styles.contents, transformStyle]}>
-          <ScrollView style={{ flex: 1 }} >
-            <YourTracksList />
-          </ScrollView>
+          <PlaylistsList currentIndex={this.state.currentIndex}
+            onCurrentChange={index => this.setState({ currentIndex: index })} />
           <View style={[styles.anchorContainer]}>
             <View style={{ backgroundColor: "#f2f2f2" }}
               {...this._panResponder.panHandlers}>
@@ -44,15 +41,8 @@ class YourTracksScreen extends Component {
     )
   }
 
-  onLeftIconPress = async () => {
-    try {
-      const selectedFiles = await showAudioFilesPickerDialog();
-      for (let i = 0; i < selectedFiles.length; ++i) {
-        const track = getTrackFromFile(selectedFiles[i]);
-        track.duration = await readMp3Duration(selectedFiles[i].path);
-        this.props.yourTracksAddTrack(track);
-      }
-    } catch (e) { console.log(e); }
+  onLeftIconPress = () => {
+    this.props.playlistsDeletePlaylist(this.state.currentIndex);
   }
 
   createPanResponder = () => {
@@ -62,15 +52,12 @@ class YourTracksScreen extends Component {
       onPanResponderRelease: this.onPanResponderRelease,
     });
   }
-
   onMoveShouldSetPanResponder = (evt, gestureState) => true
-
   onPanResponderMove = (evt, gestureState) => {
     if (gestureState.dy >= -UI_CONSTANTS.SCROLL_VIEW_HEIGHT - 10)
       if (gestureState.dy <= 0)
         this._animatedValue.setValue(gestureState.dy);
   }
-
   onPanResponderRelease = (evt, gestureState) => {
     if (Math.floor(gestureState.moveY) < UI_CONSTANTS.VIEW_HEIGHT / 2) {
       Animated.timing(this._animatedValue, {
@@ -90,8 +77,8 @@ class YourTracksScreen extends Component {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  yourTracksAddTrack: bindActionCreators(yourTracksAddTrack, dispatch),
+  playlistsDeletePlaylist: bindActionCreators(playlistsDeletePlaylist, dispatch),
 })
 
-export default connect(null, mapDispatchToProps)(YourTracksScreen)
+export default connect(null, mapDispatchToProps)(YourPlaylistsScreen)
 
