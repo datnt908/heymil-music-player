@@ -1,5 +1,6 @@
 export const TRACK_SCHEMA_NAME = "Track";
 export const PLAYER_SCHEMA_NAME = "Player";
+export const PLAYLIST_SCHEMA_NAME = "Playlist";
 
 export const TrackSchema = {
   name: TRACK_SCHEMA_NAME,
@@ -26,6 +27,16 @@ export const PlayerSchema = {
   }
 }
 
+export const PlaylistSchema = {
+  name: PLAYLIST_SCHEMA_NAME,
+  primaryKey: "id",
+  properties: {
+    id: "string",
+    name: "string",
+    trackIDs: "string[]",
+  }
+}
+
 export const dbOptions = {
-  schema: [PlayerSchema, TrackSchema],
+  schema: [PlayerSchema, TrackSchema, PlaylistSchema],
 }

@@ -100,3 +100,12 @@ export const onTrackEnd = async (track, position, isRepeat, isShuffle) => {
       }
     } catch (e) { console.log(e); }
 }
+
+export const addPlaylist = async (playlist, trackID) => {
+  if (playlist) {
+    const tempPlaylist = Object.create(playlist);
+    await RNTP.reset();
+    await RNTP.add(tempPlaylist.tracks);
+    await RNTP.skip(trackID);
+  }
+}

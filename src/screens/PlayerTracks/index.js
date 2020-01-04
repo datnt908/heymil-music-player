@@ -28,7 +28,9 @@ class PlayerTracksScreen extends Component {
     panContainerStyle.push(transformStyle);
     return (
       <View style={[styles.container]}>
-        <Header title="Player Tracks" leftIconElement={TimesSolidSVGRJSX}
+        <Header title="Player Tracks"
+          navigator={this.props.navigator}
+          leftIconElement={TimesSolidSVGRJSX}
           onLeftIconPress={this.onLeftIconPress} />
         <Animated.View style={panContainerStyle}>
           <View style={{ backgroundColor: "#f2f2f2" }}
