@@ -15,6 +15,10 @@ Tuy nhiên, mục tiêu quan trọng nhất vẫn là hoàn thành tốt đồ �
 * Phát nhạc nền khi ứng dụng đã tắt
 * Điều khiển trình phát nhạc (Player)
 * Điều khiển trình phát nhạc (từ thanh thông báo)
+* Thêm nhạc vào playlist đã có hoặc tạo mới
+* Quản lý các playlist và nhạc trong playlist
+
+Xem qua poster giới thiệu ứng dụng tại [đây][2]
 
 ## Cài đặt và sử dụng
 
@@ -26,14 +30,15 @@ Nếu các bạn mới bắt đầu với React Native, hãy ghé qua trang ch�
 
 ### APK versions
 
-Ngoài ra: các bạn có thể tải các file cài đặt APK tại [đây][1]
+Ngoài ra: các bạn có thể tải các file cài đặt APK tại [đây][1]  
+Phiên bản mới nhất: version 0.3.0 (04/01/2020)
 
 __Hướng dẫn cài đặt:__
 * Để có thể cài đặt file APK: hãy bật chế độ cho phía cài đặt không rõ nguồn
 * Ngoài ra, khi tải bằng Google Drive, có thể sẽ được yêu cầu cài đặt từ ứng dụngdụng
 
-__Yêu cầu cấu hình: Android 5.1 Lollipop trở lên__ 
+__Yêu cầu cấu hình: Android 6 Lollipop trở lên__   
+_Đã kiểm thử Android 10 và Android 6_
 
-_Đã kiểm thử Android 10 và Android 5.1_
-
-[1]: https://drive.google.com/open?id=10PhEcHc16BKJV5GgIiKW3TnecsDjgFeh
+[1]: https://drive.google.com/open?id=1MMA0b7BHcX3BCZXOC5HlTNnJXQDwndaf
+[2]: https://drive.google.com/file/d/1gGLzwR36yUqhOQvPrO6Okp0_-dnLmpyi/preview
