@@ -3,7 +3,6 @@ import { getRandomInt } from '../utils/helperFunctions';
 import { loadPlayerSchema } from '../utils/database/PlayerDAL';
 
 export const RNTPOptions = {
-  stopWithApp: true,
   capabilities: [
     RNTP.CAPABILITY_STOP,
     RNTP.CAPABILITY_PLAY,
